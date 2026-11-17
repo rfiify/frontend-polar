@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 
 type Props = {
@@ -16,14 +17,40 @@ type Props = {
   route: any;
 };
 
-// Recognizable Bold Arrow Component
+// Recognizable Bold Arrow Component with improved alignment
 const BoldArrow = ({ direction = 'left', color = '#062D47', size = 20 }: { direction?: 'left' | 'right', color?: string, size?: number }) => {
   const isRight = direction === 'right';
+  const thickness = size * 0.12;
+  const headSize = size * 0.45;
+
   return (
-    <View style={[styles.arrowContainer, { width: size, height: size }, isRight && { transform: [{ rotate: '180deg' }] }]}>
-      <View style={[styles.arrowLine, { backgroundColor: color, width: size * 0.8, height: size * 0.15 }]} />
-      <View style={[styles.arrowHeadTop, { borderColor: color, borderTopWidth: size * 0.15, borderLeftWidth: size * 0.15, width: size * 0.4, height: size * 0.4, top: size * 0.28, left: size * 0.08 }]} />
-      <View style={[styles.arrowHeadBottom, { borderColor: color, borderBottomWidth: size * 0.15, borderLeftWidth: size * 0.15, width: size * 0.35, height: size * 0.35, bottom: size * 0.3, left: size * 0.1 }]} />
+    <View style={{
+      width: size,
+      height: size,
+      justifyContent: 'center',
+      alignItems: 'center',
+      transform: [{ rotate: isRight ? '180deg' : '0deg' }]
+    }}>
+      {/* Main Line - centered */}
+      <View style={{
+        width: size * 0.75,
+        height: thickness,
+        backgroundColor: color,
+        borderRadius: thickness / 2,
+        position: 'absolute',
+      }} />
+      {/* Arrow Head (Chevron) - centered vertically with the line */}
+      <View style={{
+        position: 'absolute',
+        left: size * 0.08,
+        width: headSize,
+        height: headSize,
+        borderTopWidth: thickness,
+        borderLeftWidth: thickness,
+        borderColor: color,
+        transform: [{ rotate: '-45deg' }],
+        borderTopLeftRadius: thickness * 0.4
+      }} />
     </View>
   );
 };
@@ -104,27 +131,20 @@ const VerifikasiOTPRegistrasiPerusahaan = ({
           <View style={styles.headerContent}>
 
             {/* PANAH KEMBALI */}
-
             <TouchableOpacity
               style={styles.backButton}
               onPress={() => navigation.goBack()}
               activeOpacity={0.7}>
-
-              <BoldArrow direction="left" color="#062D47" size={24} />
-
+              <BoldArrow direction="left" color="#062D47" size={26} />
             </TouchableOpacity>
 
 
             {/* LOGO POLAR */}
-
             <View style={styles.logoRow}>
-
               <View style={styles.logoBox}>
                 <Text style={styles.logoP}>P</Text>
               </View>
-
               <Text style={styles.logoText}>POLAR</Text>
-
             </View>
 
           </View>
@@ -138,72 +158,50 @@ const VerifikasiOTPRegistrasiPerusahaan = ({
         <View style={styles.content}>
 
           {/* ICON EMAIL */}
-
           <View style={styles.emailIconContainer}>
-
             <View style={styles.emailIcon}>
-
               <View style={styles.emailLineLeft} />
-
               <View style={styles.emailLineRight} />
-
               <View style={styles.emailDot} />
-
             </View>
-
           </View>
 
 
           {/* TITLE */}
-
           <Text style={styles.title}>
             Verifikasi Email Perusahaan
           </Text>
 
 
           {/* DESCRIPTION */}
-
           <Text style={styles.description}>
             Masukkan 6 digit kode OTP yang kami kirimkan ke:
           </Text>
 
 
           {/* EMAIL */}
-
           <View style={styles.emailPill}>
-
             <View style={styles.smallMail}>
-
               <View style={styles.smallMailLeft} />
-
               <View style={styles.smallMailRight} />
-
             </View>
-
             <Text
               style={styles.emailText}
               numberOfLines={1}
               ellipsizeMode="middle">
-
               {email}
-
             </Text>
-
             <View style={styles.emailDivider} />
-
             <Text style={styles.timer}>
               04:45
             </Text>
-
           </View>
 
 
           {/* =====================================================
               OTP INPUT
           ===================================================== */}
-
           <View style={styles.otpContainer}>
-
             {otp.map((value, index) => (
               <TextInput
                 key={index}
@@ -224,87 +222,68 @@ const VerifikasiOTPRegistrasiPerusahaan = ({
                 selectTextOnFocus
               />
             ))}
-
           </View>
 
 
           {/* =====================================================
               VERIFY BUTTON
           ===================================================== */}
-
           <TouchableOpacity
             style={styles.verifyButton}
             onPress={handleVerifikasi}
             activeOpacity={0.8}>
-
             <Text style={styles.verifyButtonText}>
               Verifikasi &amp; Lanjutkan
             </Text>
-
             <View style={styles.buttonArrowContainer}>
               <BoldArrow direction="right" color="#FFFFFF" size={18} />
             </View>
-
           </TouchableOpacity>
 
 
           {/* =====================================================
               RESEND
           ===================================================== */}
-
           <View style={styles.resendRow}>
-
             <Text style={styles.resendText}>
               Belum menerima kode?
             </Text>
-
             <TouchableOpacity
               onPress={handleKirimUlang}
               activeOpacity={0.7}>
-
               <Text style={styles.resendLink}>
                 {' '}Kirim Ulang
               </Text>
-
             </TouchableOpacity>
-
             <Text style={styles.resendTimer}>
               {' '}(45s)
             </Text>
-
           </View>
 
 
           {/* =====================================================
               BACK TO REGISTRATION
           ===================================================== */}
-
           <TouchableOpacity
             style={styles.backRegistration}
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}>
-
             <View style={styles.backRegistrationArrowContainer}>
               <BoldArrow direction="left" color="#727A81" size={16} />
             </View>
-
             <Text style={styles.backRegistrationText}>
               Kembali ke pendaftaran
             </Text>
-
           </TouchableOpacity>
 
 
           {/* =====================================================
               HELP
           ===================================================== */}
-
           <View style={styles.helpSection}>
-
             <Text style={styles.helpText}>
               Butuh bantuan verifikasi?
             </Text>
-
             <TouchableOpacity
               onPress={() =>
                 Alert.alert(
@@ -313,30 +292,23 @@ const VerifikasiOTPRegistrasiPerusahaan = ({
                 )
               }
               activeOpacity={0.7}>
-
               <Text style={styles.csText}>
                 Hubungi CS
               </Text>
-
             </TouchableOpacity>
-
           </View>
 
 
           {/* =====================================================
               SECURITY
           ===================================================== */}
-
           <View style={styles.securityRow}>
-
             <Text style={styles.lockIconSymbol}>
               ♙
             </Text>
-
             <Text style={styles.securityText}>
               Enkripsi SSL 256-Bit • Mitra Industri Polinela
             </Text>
-
           </View>
 
         </View>
@@ -379,7 +351,7 @@ const styles = StyleSheet.create({
   =========================================================== */
 
   header: {
-    height: 108,
+    height: Platform.OS === 'android' ? 70 + (StatusBar.currentHeight || 0) : 108,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#DCE4EC',
@@ -389,7 +361,7 @@ const styles = StyleSheet.create({
   },
 
   headerContent: {
-    height: 35,
+    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -401,11 +373,11 @@ const styles = StyleSheet.create({
   =========================================================== */
 
   backButton: {
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 10,
   },
 
 
@@ -414,15 +386,15 @@ const styles = StyleSheet.create({
   =========================================================== */
 
   logoRow: {
-    height: 35,
+    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
   },
 
   logoBox: {
-    width: 35,
-    height: 35,
-    borderRadius: 9,
+    width: 34,
+    height: 34,
+    borderRadius: 8,
     backgroundColor: '#123D59',
     justifyContent: 'center',
     alignItems: 'center',
@@ -691,14 +663,13 @@ const styles = StyleSheet.create({
   },
 
   buttonArrowContainer: {
-    height: 20,
+    marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 10,
   },
 
 
-  /* ===========================================================
+/* ===========================================================
      RESEND
   =========================================================== */
 
@@ -749,7 +720,7 @@ const styles = StyleSheet.create({
     height: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 7,
+    marginRight: 8,
   },
 
   backRegistrationText: {
@@ -811,28 +782,6 @@ const styles = StyleSheet.create({
     color: '#747D84',
     fontWeight: '600',
     includeFontPadding: false,
-  },
-
-  /* ===========================================================
-     CUSTOM ARROW COMPONENT STYLES
-  =========================================================== */
-
-  arrowContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  arrowLine: {
-    borderRadius: 1.5,
-  },
-  arrowHeadTop: {
-    position: 'absolute',
-    transform: [{ rotate: '-45deg' }],
-    borderTopLeftRadius: 1,
-  },
-  arrowHeadBottom: {
-    position: 'absolute',
-    transform: [{ rotate: '45deg' }],
-    borderBottomLeftRadius: 1,
   },
 
 });

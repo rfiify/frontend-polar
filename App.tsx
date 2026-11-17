@@ -2,14 +2,24 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+// ===============================
+// ROLE SELECTION
+// ===============================
 import RoleSelectionScreen from './src/screens/RoleSelectionScreen';
 
+// ===============================
+// MAHASISWA
+// ===============================
 import LoginMahasiswaScreen from './src/mahasiswa/LoginMahasiswaScreen';
 import RegisterMahasiswaScreen from './src/mahasiswa/RegisterMahasiswaScreen';
 import LupaPasswordMahasiswa from './src/mahasiswa/LupaPasswordMahasiswa';
 import VerifikasiOTPMahasiswa from './src/mahasiswa/VerifikasiOTPMahasiswa';
 import VerifikasiOTPLupaPasswordMahasiswa from './src/mahasiswa/VerifikasiOTPLupaPasswordMahasiswa';
 import ResetPasswordMahasiswa from './src/mahasiswa/ResetPasswordMahasiswa';
+
+// ===============================
+// PERUSAHAAN
+// ===============================
 import LoginPerusahaanScreen from './src/perusahaan/LoginPerusahaanScreen';
 import LupaPasswordPerusahaan from './src/perusahaan/LupaPasswordPerusahaan';
 import VerifikasiOTPPerusahaan from './src/perusahaan/VerifikasiOTPPerusahaan';
@@ -17,6 +27,15 @@ import ResetPasswordPerusahaan from './src/perusahaan/ResetPasswordPerusahaan';
 import RegistrasiPerusahaanScreen from './src/perusahaan/RegistrasiPerusahaanScreen';
 import VerifikasiOTPRegistrasiPerusahaan from './src/perusahaan/VerifikasiOTPRegistrasiPerusahaan';
 import LengkapiProfilPerusahaan from './src/perusahaan/LengkapiProfilPerusahaan';
+
+
+// ===============================
+// KLIEN
+// ===============================
+import LoginKlienScreen from './src/klien/LoginKlienScreen';
+import ResetPasswordKlien from './src/klien/ResetPasswordKlien';
+import LupaPasswordKlien from './src/klien/LupaPasswordKlien';
+import VerifikasiOTPLupaPasswordKlien from './src/klien/VerifikasiOTPLupaPasswordKlien';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,11 +48,17 @@ export default function App() {
           headerShown: false,
         }}>
 
+        {/* =========================
+            ROLE SELECTION
+        ========================= */}
         <Stack.Screen
           name="RoleSelection"
           component={RoleSelectionScreen}
         />
 
+        {/* =========================
+            MAHASISWA
+        ========================= */}
         <Stack.Screen
           name="LoginMahasiswa"
           component={LoginMahasiswaScreen}
@@ -64,6 +89,9 @@ export default function App() {
           component={ResetPasswordMahasiswa}
         />
 
+        {/* =========================
+            PERUSAHAAN
+        ========================= */}
         <Stack.Screen
           name="LoginPerusahaan"
           component={LoginPerusahaanScreen}
@@ -74,6 +102,7 @@ export default function App() {
           component={LupaPasswordPerusahaan}
         />
 
+        {/* OTP UNTUK LUPA PASSWORD */}
         <Stack.Screen
           name="VerifikasiOTPPerusahaan"
           component={VerifikasiOTPPerusahaan}
@@ -84,21 +113,47 @@ export default function App() {
           component={ResetPasswordPerusahaan}
         />
 
+        {/* REGISTRASI PERUSAHAAN */}
         <Stack.Screen
           name="RegistrasiPerusahaan"
           component={RegistrasiPerusahaanScreen}
-          options={{ headerShown: false }}
         />
 
+        {/* OTP KHUSUS REGISTRASI PERUSAHAAN */}
         <Stack.Screen
           name="VerifikasiOTPRegistrasiPerusahaan"
           component={VerifikasiOTPRegistrasiPerusahaan}
+        />
+
+        {/* LENGKAPI PROFIL PERUSAHAAN */}
+        <Stack.Screen
+          name="LengkapiProfilPerusahaan"
+          component={LengkapiProfilPerusahaan}
+        />
+
+        {/* =========================
+            KLIEN
+        ========================= */}
+        <Stack.Screen
+          name="LoginKlien"
+          component={LoginKlienScreen}
+        />
+
+        <Stack.Screen
+          name="LupaPasswordKlien"
+          component={LupaPasswordKlien}
           options={{headerShown: false}}
         />
 
         <Stack.Screen
-          name="LengkapiProfilPerusahaan"
-          component={LengkapiProfilPerusahaan}
+          name="VerifikasiOTPLupaPasswordKlien"
+          component={VerifikasiOTPLupaPasswordKlien}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ResetPasswordKlien"
+          component={ResetPasswordKlien}
           options={{headerShown: false}}
         />
 

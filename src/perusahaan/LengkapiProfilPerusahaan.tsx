@@ -11,6 +11,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Modal,
 } from 'react-native';
 
 import {
@@ -19,12 +20,48 @@ import {
   isCancel,
 } from '@react-native-documents/picker';
 
+// Recognizable Bold Arrow Component
+const BoldArrow = ({ direction = 'left', color = '#062D47', size = 20 }: { direction?: 'left' | 'right', color?: string, size?: number }) => {
+  const isRight = direction === 'right';
+  const thickness = size * 0.12;
+  const headSize = size * 0.42;
+
+  return (
+    <View style={{
+      width: size,
+      height: size,
+      justifyContent: 'center',
+      alignItems: 'center',
+      transform: [{ rotate: isRight ? '180deg' : '0deg' }]
+    }}>
+      <View style={{
+        width: size * 0.75,
+        height: thickness,
+        backgroundColor: color,
+        borderRadius: thickness / 2,
+        position: 'absolute',
+      }} />
+      <View style={{
+        position: 'absolute',
+        left: size * 0.08,
+        width: headSize,
+        height: headSize,
+        borderTopWidth: thickness,
+        borderLeftWidth: thickness,
+        borderColor: color,
+        transform: [{ rotate: '-45deg' }],
+        borderTopLeftRadius: 1.5
+      }} />
+    </View>
+  );
+};
+
 const LengkapiProfilPerusahaan = ({navigation, route}: any) => {
   const emailTerdaftar =
-    route?.params?.email || 'kontak@perusahaan.com';
+    route?.params?.email || 'hrd@mitrafirdaus.co.id';
 
   // ============================================================
-  // FORM
+  // FORM STATE
   // ============================================================
 
   const [namaPerusahaan, setNamaPerusahaan] = useState('');
@@ -35,7 +72,7 @@ const LengkapiProfilPerusahaan = ({navigation, route}: any) => {
   const [website, setWebsite] = useState('');
 
   // ============================================================
-  // DOKUMEN
+  // DOKUMEN STATE
   // ============================================================
 
   const [dokumenUtama, setDokumenUtama] = useState<any>(null);
@@ -43,7 +80,12 @@ const LengkapiProfilPerusahaan = ({navigation, route}: any) => {
     useState<any>(null);
 
   // ============================================================
-  // PILIH JENIS PERUSAHAAN
+  // MODAL STATE
+  // ============================================================
+  const [showModal, setShowModal] = useState(false);
+
+  // ============================================================
+  // HANDLERS
   // ============================================================
 
   const handlePilihJenis = () => {
@@ -51,1521 +93,409 @@ const LengkapiProfilPerusahaan = ({navigation, route}: any) => {
       'Jenis Perusahaan',
       'Pilih jenis badan usaha',
       [
-        {
-          text: 'PT',
-          onPress: () =>
-            setJenisPerusahaan(
-              'PT (Perseroan Terbatas)',
-            ),
-        },
-        {
-          text: 'CV',
-          onPress: () =>
-            setJenisPerusahaan(
-              'CV (Commanditaire Vennootschap)',
-            ),
-        },
-        {
-          text: 'Firma',
-          onPress: () =>
-            setJenisPerusahaan('Firma'),
-        },
-        {
-          text: 'Yayasan',
-          onPress: () =>
-            setJenisPerusahaan('Yayasan'),
-        },
-        {
-          text: 'Batal',
-          style: 'cancel',
-        },
+        { text: 'PT', onPress: () => setJenisPerusahaan('PT (Perseroan Terbatas)') },
+        { text: 'CV', onPress: () => setJenisPerusahaan('CV (Commanditaire Vennootschap)') },
+        { text: 'Firma', onPress: () => setJenisPerusahaan('Firma') },
+        { text: 'Yayasan', onPress: () => setJenisPerusahaan('Yayasan') },
+        { text: 'Batal', style: 'cancel' },
       ],
     );
   };
-
-  // ============================================================
-  // CEK FILE
-  // ============================================================
 
   const isFileAllowed = (file: any) => {
     const mimeType = (file?.type || '').toLowerCase();
     const fileName = (file?.name || '').toLowerCase();
-
-    const allowedMimeTypes = [
-      'application/pdf',
-      'image/jpeg',
-      'image/jpg',
-      'image/png',
-    ];
-
-    const allowedExtensions = [
-      '.pdf',
-      '.jpg',
-      '.jpeg',
-      '.png',
-    ];
-
-    const validMime =
-      allowedMimeTypes.includes(mimeType);
-
-    const validExtension =
-      allowedExtensions.some(extension =>
-        fileName.endsWith(extension),
-      );
-
-    return validMime || validExtension;
+    const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+    return allowedExtensions.some(ext => fileName.endsWith(ext)) || mimeType.includes('pdf') || mimeType.includes('image');
   };
-
-  // ============================================================
-  // CEK UKURAN FILE
-  // ============================================================
-
-  const isFileSizeAllowed = (file: any) => {
-    if (!file?.size) {
-      return true;
-    }
-
-    const maxSize = 5 * 1024 * 1024;
-
-    return file.size <= maxSize;
-  };
-
-  // ============================================================
-  // FORMAT UKURAN FILE
-  // ============================================================
-
-  const formatFileSize = (size?: number) => {
-    if (!size) {
-      return '';
-    }
-
-    if (size < 1024) {
-      return `${size} B`;
-    }
-
-    if (size < 1024 * 1024) {
-      return `${(size / 1024).toFixed(1)} KB`;
-    }
-
-    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
-  };
-
-  // ============================================================
-  // PILIH DOKUMEN LEGALITAS UTAMA
-  // ============================================================
 
   const handleUploadUtama = async () => {
     try {
-      const results = await pick({
-        type: [
-          types.pdf,
-          types.images,
-        ],
-        copyTo: 'cachesDirectory',
-      });
-
+      const results = await pick({ type: [types.pdf, types.images], copyTo: 'cachesDirectory' });
       const result = results?.[0];
-
-      if (!result) {
-        return;
-      }
-
+      if (!result) return;
       if (!isFileAllowed(result)) {
-        Alert.alert(
-          'Format Tidak Didukung',
-          'Silakan pilih file PDF, JPG, JPEG, atau PNG.',
-        );
+        Alert.alert('Format Tidak Didukung', 'Pilih file PDF, JPG, JPEG, atau PNG.');
         return;
       }
-
-      if (!isFileSizeAllowed(result)) {
-        Alert.alert(
-          'Ukuran File Terlalu Besar',
-          'Ukuran dokumen maksimal adalah 5MB.',
-        );
+      if (result.size && result.size > 5 * 1024 * 1024) {
+        Alert.alert('Ukuran Terlalu Besar', 'Maksimal 5MB.');
         return;
       }
-
       setDokumenUtama(result);
     } catch (error) {
-      if (isCancel(error)) {
-        return;
-      }
-
-      console.error(
-        'ERROR PILIH DOKUMEN UTAMA:',
-        error,
-      );
-
-      Alert.alert(
-        'Gagal Memilih File',
-        'Dokumen tidak dapat dipilih. Silakan coba lagi.',
-      );
+      if (!isCancel(error)) Alert.alert('Gagal', 'Terjadi kesalahan saat memilih file.');
     }
   };
-
-  // ============================================================
-  // PILIH DOKUMEN PENDUKUNG
-  // ============================================================
 
   const handleUploadPendukung = async () => {
     try {
-      const results = await pick({
-        type: [
-          types.pdf,
-          types.images,
-        ],
-        copyTo: 'cachesDirectory',
-      });
-
+      const results = await pick({ type: [types.pdf, types.images], copyTo: 'cachesDirectory' });
       const result = results?.[0];
-
-      if (!result) {
-        return;
-      }
-
+      if (!result) return;
       if (!isFileAllowed(result)) {
-        Alert.alert(
-          'Format Tidak Didukung',
-          'Silakan pilih file PDF, JPG, JPEG, atau PNG.',
-        );
+        Alert.alert('Format Tidak Didukung', 'Pilih file PDF, JPG, JPEG, atau PNG.');
         return;
       }
-
-      if (!isFileSizeAllowed(result)) {
-        Alert.alert(
-          'Ukuran File Terlalu Besar',
-          'Ukuran dokumen maksimal adalah 5MB.',
-        );
+      if (result.size && result.size > 5 * 1024 * 1024) {
+        Alert.alert('Ukuran Terlalu Besar', 'Maksimal 5MB.');
         return;
       }
-
       setDokumenPendukung(result);
     } catch (error) {
-      if (isCancel(error)) {
-        return;
-      }
-
-      console.error(
-        'ERROR PILIH DOKUMEN PENDUKUNG:',
-        error,
-      );
-
-      Alert.alert(
-        'Gagal Memilih File',
-        'Dokumen tidak dapat dipilih. Silakan coba lagi.',
-      );
+      if (!isCancel(error)) Alert.alert('Gagal', 'Terjadi kesalahan saat memilih file.');
     }
   };
-
-  // ============================================================
-  // HAPUS DOKUMEN UTAMA
-  // ============================================================
-
-  const handleHapusDokumenUtama = () => {
-    Alert.alert(
-      'Hapus Dokumen',
-      'Yakin ingin menghapus dokumen legalitas yang dipilih?',
-      [
-        {
-          text: 'Batal',
-          style: 'cancel',
-        },
-        {
-          text: 'Hapus',
-          style: 'destructive',
-          onPress: () =>
-            setDokumenUtama(null),
-        },
-      ],
-    );
-  };
-
-  // ============================================================
-  // HAPUS DOKUMEN PENDUKUNG
-  // ============================================================
-
-  const handleHapusDokumenPendukung = () => {
-    Alert.alert(
-      'Hapus Dokumen',
-      'Yakin ingin menghapus dokumen pendukung yang dipilih?',
-      [
-        {
-          text: 'Batal',
-          style: 'cancel',
-        },
-        {
-          text: 'Hapus',
-          style: 'destructive',
-          onPress: () =>
-            setDokumenPendukung(null),
-        },
-      ],
-    );
-  };
-
-  // ============================================================
-  // KIRIM VERIFIKASI
-  // ============================================================
 
   const handleKirim = () => {
-    if (!namaPerusahaan.trim()) {
-      Alert.alert(
-        'Data Belum Lengkap',
-        'Silakan masukkan nama perusahaan.',
-      );
+    if (!namaPerusahaan.trim() || !jenisPerusahaan || !bidangUsaha.trim() || !alamat.trim() || !telepon.trim() || !dokumenUtama) {
+      Alert.alert('Data Belum Lengkap', 'Silakan lengkapi semua data wajib yang bertanda (*).');
       return;
     }
-
-    if (!jenisPerusahaan.trim()) {
-      Alert.alert(
-        'Data Belum Lengkap',
-        'Silakan pilih jenis perusahaan.',
-      );
-      return;
-    }
-
-    if (!bidangUsaha.trim()) {
-      Alert.alert(
-        'Data Belum Lengkap',
-        'Silakan masukkan bidang usaha.',
-      );
-      return;
-    }
-
-    if (!alamat.trim()) {
-      Alert.alert(
-        'Data Belum Lengkap',
-        'Silakan masukkan alamat perusahaan.',
-      );
-      return;
-    }
-
-    if (!telepon.trim()) {
-      Alert.alert(
-        'Data Belum Lengkap',
-        'Silakan masukkan nomor telepon perusahaan.',
-      );
-      return;
-    }
-
-    if (!dokumenUtama) {
-      Alert.alert(
-        'Dokumen Belum Ada',
-        'Silakan unggah dokumen legalitas utama.',
-      );
-      return;
-    }
-
-    Alert.alert(
-      'Berhasil Dikirim',
-      'Profil perusahaan berhasil dikirim untuk proses verifikasi Admin POLAR.',
-    );
+    setShowModal(true);
   };
 
-  // ============================================================
-  // UI
-  // ============================================================
+  const formatFileSize = (size?: number) => {
+    if (!size) return '';
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="#FFFFFF"
-        translucent={false}
-      />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-      <KeyboardAvoidingView
-        style={styles.keyboardView}
-        behavior={
-          Platform.OS === 'ios'
-            ? 'padding'
-            : undefined
-        }>
-
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={
-            styles.scrollContent
-          }
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled">
-
-          {/* =====================================================
-              HEADER
-          ===================================================== */}
-
-          <View style={styles.header}>
-
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() =>
-                navigation.goBack()
-              }
-              activeOpacity={0.7}>
-
-              <Text style={styles.backArrow}>
-                ←
-              </Text>
-
-            </TouchableOpacity>
-
-            <View style={styles.logoRow}>
-
-              <View style={styles.logoBox}>
-                <Text style={styles.logoP}>
-                  P
-                </Text>
-              </View>
-
-              <Text style={styles.logoText}>
-                POLAR
-              </Text>
-
+      <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        {/* HEADER */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Text style={styles.backArrow}>←</Text>
+          </TouchableOpacity>
+          <View style={styles.logoContainer}>
+            <View style={styles.logoBox}>
+              <Text style={styles.logoP}>P</Text>
             </View>
-
+            <Text style={styles.logoText}>POLAR</Text>
           </View>
+          <TouchableOpacity style={styles.profileCircle}>
+            <View style={styles.profileIconInner}>
+              <View style={styles.profileHead} />
+              <View style={styles.profileBody} />
+            </View>
+          </TouchableOpacity>
+        </View>
 
-          {/* =====================================================
-              JUDUL
-          ===================================================== */}
-
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           <View style={styles.pageIntro}>
-
-            <Text style={styles.pageTitle}>
-              Lengkapi Profil Perusahaan
-            </Text>
-
+            <View style={styles.stepBadge}>
+               <Text style={styles.stepBadgeText}>🏁 Tahap 2 dari 2: Profil & Legalitas</Text>
+            </View>
+            <Text style={styles.pageTitle}>Lengkapi Profil Perusahaan</Text>
             <Text style={styles.pageSubtitle}>
-              Lengkapi informasi dan dokumen perusahaan untuk
-              proses verifikasi Admin POLAR.
+              Lengkapi informasi dan dokumen perusahaan untuk proses verifikasi Admin POLAR.
             </Text>
-
           </View>
 
-          {/* =====================================================
-              INFORMASI PERUSAHAAN
-          ===================================================== */}
-
+          {/* FORM CARD */}
           <View style={styles.card}>
+            <Text style={styles.cardTitle}>Informasi Perusahaan</Text>
+            <Text style={styles.cardDescription}>Masukkan informasi dasar mengenai perusahaan Anda.</Text>
 
-            <Text style={styles.cardTitle}>
-              Informasi Perusahaan
-            </Text>
-
-            <Text style={styles.cardDescription}>
-              Masukkan informasi dasar mengenai perusahaan Anda.
-            </Text>
-
-            {/* NAMA PERUSAHAAN */}
-
-            <Text style={styles.label}>
-              Nama Perusahaan{' '}
-              <Text style={styles.required}>
-                *
-              </Text>
-            </Text>
-
+            <Text style={styles.label}>Nama Perusahaan <Text style={styles.required}>*</Text></Text>
             <TextInput
+              style={styles.input}
               value={namaPerusahaan}
               onChangeText={setNamaPerusahaan}
               placeholder="Masukkan nama resmi perusahaan"
-              placeholderTextColor="#7D8793"
-              style={styles.input}
+              placeholderTextColor="#8A9BAA"
             />
 
-            {/* JENIS PERUSAHAAN */}
-
-            <Text style={styles.label}>
-              Jenis Perusahaan{' '}
-              <Text style={styles.required}>
-                *
+            <Text style={styles.label}>Jenis Perusahaan <Text style={styles.required}>*</Text></Text>
+            <TouchableOpacity style={styles.selectInput} onPress={handlePilihJenis}>
+              <Text style={[styles.selectText, !jenisPerusahaan && {color: '#8A9BAA'}]}>
+                {jenisPerusahaan || 'Pilih jenis badan usaha'}
               </Text>
-            </Text>
-
-            <TouchableOpacity
-              style={styles.selectInput}
-              onPress={handlePilihJenis}
-              activeOpacity={0.8}>
-
-              <Text
-                style={[
-                  styles.selectText,
-                  !jenisPerusahaan &&
-                    styles.placeholderText,
-                ]}>
-
-                {jenisPerusahaan ||
-                  'Pilih jenis badan usaha'}
-
-              </Text>
-
-              <Text style={styles.chevron}>
-                ⌄
-              </Text>
-
+              <Text style={styles.chevronDown}>▼</Text>
             </TouchableOpacity>
 
-            {/* BIDANG USAHA */}
-
-            <Text style={styles.label}>
-              Bidang Usaha{' '}
-              <Text style={styles.required}>
-                *
-              </Text>
-            </Text>
-
+            <Text style={styles.label}>Bidang Usaha <Text style={styles.required}>*</Text></Text>
             <TextInput
+              style={styles.input}
               value={bidangUsaha}
               onChangeText={setBidangUsaha}
               placeholder="Contoh: Teknologi Informasi, Agrikultur"
-              placeholderTextColor="#7D8793"
-              style={styles.input}
+              placeholderTextColor="#8A9BAA"
             />
 
-            {/* ALAMAT */}
-
-            <Text style={styles.label}>
-              Alamat Perusahaan{' '}
-              <Text style={styles.required}>
-                *
-              </Text>
-            </Text>
-
+            <Text style={styles.label}>Alamat Perusahaan <Text style={styles.required}>*</Text></Text>
             <TextInput
+              style={[styles.input, styles.textArea]}
               value={alamat}
               onChangeText={setAlamat}
               placeholder="Masukkan alamat lengkap operasional atau kantor pusat"
-              placeholderTextColor="#7D8793"
+              placeholderTextColor="#8A9BAA"
               multiline
-              textAlignVertical="top"
-              style={[
-                styles.input,
-                styles.addressInput,
-              ]}
             />
 
-            {/* TELEPON */}
-
-            <Text style={styles.label}>
-              Nomor Telepon Perusahaan{' '}
-              <Text style={styles.required}>
-                *
-              </Text>
-            </Text>
-
-            <View style={styles.phoneInput}>
-
-              <Text style={styles.countryCode}>
-                +62
-              </Text>
-
-              <TextInput
+            <Text style={styles.label}>Nomor Telepon Perusahaan <Text style={styles.required}>*</Text></Text>
+            <View style={styles.inputWrapperPhone}>
+               <Text style={styles.countryCode}>+62</Text>
+               <TextInput
+                style={styles.inputPhone}
                 value={telepon}
                 onChangeText={setTelepon}
                 placeholder="812-3456-7890 / (021) 555-0123"
-                placeholderTextColor="#7D8793"
+                placeholderTextColor="#8A9BAA"
                 keyboardType="phone-pad"
-                style={styles.phoneTextInput}
               />
-
             </View>
 
-            {/* EMAIL */}
-
-            <View style={styles.labelRow}>
-
-              <Text style={styles.labelNoMargin}>
-                Email Perusahaan
-              </Text>
-
-              <View style={styles.registeredBadge}>
-
-                <Text style={styles.registeredText}>
-                  Terdaftar
-                </Text>
-
-              </View>
-
+            <View style={styles.emailHeaderRow}>
+               <Text style={styles.labelNoMargin}>Email Perusahaan</Text>
+               <View style={styles.verifiedBadge}>
+                  <Text style={styles.verifiedText}>Terdaftar</Text>
+               </View>
             </View>
-
-            <View style={styles.emailInput}>
-
-              <TextInput
-                value={emailTerdaftar}
-                editable={false}
-                style={styles.emailTextInput}
-              />
-
-              <View style={styles.lockIcon}>
-                <Text style={styles.lockText}>
-                  ▣
-                </Text>
-              </View>
-
+            <View style={styles.emailDisplayBox}>
+               <Text style={styles.emailText}>{emailTerdaftar}</Text>
+               <Text style={styles.lockIconSmall}>🔒</Text>
             </View>
+            <Text style={styles.emailHelper}>Email akun yang didaftarkan pada tahap awal.</Text>
 
-            <Text style={styles.helperText}>
-              Email akun yang didaftarkan pada tahap awal.
-            </Text>
-
-            {/* WEBSITE */}
-
-            <View style={styles.websiteLabelRow}>
-
-              <Text style={styles.labelNoMargin}>
-                Website Perusahaan
-              </Text>
-
-              <Text style={styles.optionalText}>
-                (Opsional)
-              </Text>
-
-            </View>
-
+            <Text style={styles.label}>Website Perusahaan (Opsional)</Text>
             <TextInput
+              style={styles.input}
               value={website}
               onChangeText={setWebsite}
               placeholder="https://www.perusahaan.com"
-              placeholderTextColor="#7D8793"
-              keyboardType="url"
+              placeholderTextColor="#8A9BAA"
               autoCapitalize="none"
-              style={styles.input}
             />
-
           </View>
 
-          {/* =====================================================
-              DOKUMEN LEGALITAS
-          ===================================================== */}
-
+          {/* LEGALITY CARD */}
           <View style={styles.card}>
+            <Text style={styles.cardTitle}>Dokumen Legalitas</Text>
+            <Text style={styles.cardDescription}>Unggah dokumen resmi sebagai bukti identitas dan legalitas perusahaan.</Text>
 
-            <Text style={styles.cardTitle}>
-              Dokumen Legalitas
-            </Text>
-
-            <Text style={styles.cardDescription}>
-              Unggah dokumen resmi sebagai bukti identitas dan
-              legalitas perusahaan.
-            </Text>
-
-            {/* DOKUMEN UTAMA */}
-
-            <View style={styles.documentTitleRow}>
-
-              <Text style={styles.documentLabel}>
-                Dokumen Legalitas Utama{' '}
-                <Text style={styles.required}>
-                  *
-                </Text>
-              </Text>
-
-              <Text style={styles.documentExamples}>
-                NIB / Akta / NPWP / SIUP
-              </Text>
-
+            <View style={styles.docLabelRow}>
+               <Text style={styles.labelSmall}>Dokumen Legalitas Utama <Text style={styles.required}>*</Text></Text>
+               <Text style={styles.docExample}>NIB / Akta / NPWP / SIUP</Text>
             </View>
 
             <TouchableOpacity
-              style={[
-                styles.uploadMain,
-                dokumenUtama &&
-                  styles.uploadSelected,
-              ]}
-              onPress={handleUploadUtama}
-              activeOpacity={0.8}>
-
-              {dokumenUtama ? (
-                <>
-                  <View
-                    style={
-                      styles.fileIconCircle
-                    }>
-                    <Text style={styles.fileIcon}>
-                      ✓
-                    </Text>
-                  </View>
-
-                  <Text
-                    style={
-                      styles.selectedFileTitle
-                    }
-                    numberOfLines={1}>
-
-                    {dokumenUtama.name ||
-                      'Dokumen dipilih'}
-
-                  </Text>
-
-                  <Text
-                    style={
-                      styles.selectedFileSubtitle
-                    }>
-
-                    {formatFileSize(
-                      dokumenUtama.size,
-                    ) ||
-                      'File berhasil dipilih'}{' '}
-                    • Ketuk untuk mengganti
-
-                  </Text>
-                </>
-              ) : (
-                <>
-                  <View
-                    style={
-                      styles.uploadIconCircle
-                    }>
-
-                    <Text
-                      style={
-                        styles.uploadIcon
-                      }>
-                      ⇧
-                    </Text>
-
-                  </View>
-
-                  <Text
-                    style={
-                      styles.uploadTitle
-                    }>
-                    Unggah Dokumen Legalitas
-                  </Text>
-
-                  <Text
-                    style={
-                      styles.uploadSubtitle
-                    }>
-                    Format PDF, JPG, atau PNG (Maks. 5MB)
-                  </Text>
-                </>
-              )}
-
+               style={[styles.uploadBox, dokumenUtama && styles.uploadBoxActive]}
+               onPress={handleUploadUtama}
+            >
+               <View style={styles.uploadIconCircle}>
+                  <Text style={styles.uploadIcon}>{dokumenUtama ? '✓' : '↑'}</Text>
+               </View>
+               <Text style={styles.uploadTitle}>{dokumenUtama ? dokumenUtama.name : 'Unggah Dokumen Legalitas'}</Text>
+               <Text style={styles.uploadSubTitle}>
+                  {dokumenUtama ? `${formatFileSize(dokumenUtama.size)} • Ganti` : 'Format PDF, JPG, atau PNG (Maks. 5MB)'}
+               </Text>
             </TouchableOpacity>
 
-            {/* HAPUS DOKUMEN UTAMA */}
-
-            {dokumenUtama && (
-              <TouchableOpacity
-                style={
-                  styles.removeButton
-                }
-                onPress={
-                  handleHapusDokumenUtama
-                }
-                activeOpacity={0.7}>
-
-                <Text
-                  style={
-                    styles.removeButtonText
-                  }>
-                  Hapus dokumen
-                </Text>
-
-              </TouchableOpacity>
-            )}
-
-            {/* DOKUMEN PENDUKUNG */}
-
-            <View
-              style={
-                styles.supportTitleRow
-              }>
-
-              <Text
-                style={
-                  styles.supportLabel
-                }>
-                Dokumen{'\n'}Pendukung
-              </Text>
-
-              <Text
-                style={
-                  styles.supportExamples
-                }>
-                Surat Kuasa / SK /{'\n'}Portofolio
-              </Text>
-
+            <View style={styles.docLabelRow}>
+               <Text style={styles.labelSmall}>Dokumen Pendukung</Text>
+               <Text style={styles.docExample}>Surat Kuasa / SK / Portofolio</Text>
             </View>
-
             <TouchableOpacity
-              style={[
-                styles.uploadSupport,
-                dokumenPendukung &&
-                  styles.uploadSelected,
-              ]}
-              onPress={
-                handleUploadPendukung
-              }
-              activeOpacity={0.8}>
-
-              <View
-                style={
-                  styles.supportIconBox
-                }>
-
-                <Text
-                  style={
-                    styles.supportIcon
-                  }>
-
-                  {dokumenPendukung
-                    ? '✓'
-                    : '□+'}
-
-                </Text>
-
-              </View>
-
-              <View
-                style={
-                  styles.supportTextContainer
-                }>
-
-                <Text
-                  style={
-                    styles.supportUploadTitle
-                  }
-                  numberOfLines={1}>
-
-                  {dokumenPendukung
-                    ? dokumenPendukung.name
-                    : 'Unggah Dokumen Pendukung'}
-
-                </Text>
-
-                <Text
-                  style={
-                    styles.supportUploadSubtitle
-                  }>
-
-                  {dokumenPendukung
-                    ? `${formatFileSize(
-                        dokumenPendukung.size,
-                      ) || 'File dipilih'} • Ketuk untuk mengganti`
-                    : 'Opsional • PDF, JPG, PNG (Maks. 5MB)'}
-
-                </Text>
-
-              </View>
-
+               style={[styles.uploadBoxSmall, dokumenPendukung && styles.uploadBoxActive]}
+               onPress={handleUploadPendukung}
+            >
+               <View style={styles.uploadIconCircleSmall}>
+                  <Text style={styles.uploadIconSmall}>{dokumenPendukung ? '✓' : '+'}</Text>
+               </View>
+               <View style={{flex:1}}>
+                  <Text style={styles.uploadTitleSmall}>{dokumenPendukung ? dokumenPendukung.name : 'Unggah Dokumen Pendukung'}</Text>
+                  <Text style={styles.uploadSubTitleSmall}>
+                     {dokumenPendukung ? formatFileSize(dokumenPendukung.size) : 'Opsional • PDF, JPG, PNG (Maks. 5MB)'}
+                  </Text>
+               </View>
             </TouchableOpacity>
 
-            {/* HAPUS DOKUMEN PENDUKUNG */}
-
-            {dokumenPendukung && (
-              <TouchableOpacity
-                style={
-                  styles.removeSupportButton
-                }
-                onPress={
-                  handleHapusDokumenPendukung
-                }
-                activeOpacity={0.7}>
-
-                <Text
-                  style={
-                    styles.removeButtonText
-                  }>
-                  Hapus dokumen pendukung
-                </Text>
-
-              </TouchableOpacity>
-            )}
-
-            {/* CATATAN */}
-
-            <View
-              style={
-                styles.warningBox
-              }>
-
-              <Text
-                style={
-                  styles.warningIcon
-                }>
-                ✓
-              </Text>
-
-              <Text
-                style={
-                  styles.warningText
-                }>
-                Pastikan dokumen yang diunggah terbaca
-                dengan jelas, masih dalam masa berlaku, dan
-                nama tertera identik dengan profil badan usaha.
-              </Text>
-
+            <View style={styles.noteBox}>
+               <Text style={styles.noteIcon}>✓</Text>
+               <Text style={styles.noteText}>Pastikan dokumen yang diunggah terbaca dengan jelas, masih dalam masa berlaku, dan nama tertera identik dengan profil badan usaha.</Text>
             </View>
-
           </View>
 
-          {/* =====================================================
-              INFORMASI VERIFIKASI
-          ===================================================== */}
-
-          <View style={styles.infoBox}>
-
-            <View style={styles.infoHeader}>
-
-              <View
-                style={
-                  styles.infoIconCircle
-                }>
-
-                <Text
-                  style={
-                    styles.infoIcon
-                  }>
-                  i
-                </Text>
-
-              </View>
-
-              <Text style={styles.infoTitle}>
-                Informasi Verifikasi
-              </Text>
-
-            </View>
-
-            <Text style={styles.infoText}>
-              Setelah seluruh data dan dokumen dikirim, Admin
-              POLAR akan melakukan pemeriksaan keabsahan.
-              Anda akan menerima pemberitahuan melalui email
-              setelah hasil verifikasi tersedia (maksimal 1-2 hari
-              kerja).
-            </Text>
-
+          {/* VERIFICATION INFO */}
+          <View style={styles.verifInfoBox}>
+             <View style={styles.verifInfoHeader}>
+                <View style={styles.verifInfoIconCircle}>
+                   <Text style={styles.verifInfoIcon}>i</Text>
+                </View>
+                <Text style={styles.verifInfoTitle}>Informasi Verifikasi</Text>
+             </View>
+             <Text style={styles.verifInfoText}>
+               Setelah seluruh data dan dokumen dikirim, Admin POLAR akan melakukan pemeriksaan keabsahan. Anda akan menerima pemberitahuan melalui email setelah hasil verifikasi tersedia (maksimal 1-2 hari kerja).
+             </Text>
           </View>
 
-          {/* =====================================================
-              SUBMIT
-          ===================================================== */}
-
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handleKirim}
-            activeOpacity={0.85}>
-
-            <Text style={styles.submitText}>
-              Kirim untuk Verifikasi
-            </Text>
-
-            <Text style={styles.submitArrow}>
-              →
-            </Text>
-
+          {/* SUBMIT BUTTON */}
+          <TouchableOpacity style={styles.submitBtn} onPress={handleKirim} activeOpacity={0.8}>
+             <Text style={styles.submitBtnText}>Kirim untuk Verifikasi</Text>
+             <Text style={styles.submitBtnArrow}>→</Text>
           </TouchableOpacity>
-
-          <Text
-            style={
-              styles.bottomDisclaimer
-            }>
-            Dengan menekan tombol di atas, Anda menyatakan bahwa
-            data yang diisi adalah benar dan dapat
-            dipertanggungjawabkan.
-          </Text>
-
-          <View
-            style={
-              styles.bottomSpace
-            }
-          />
-
+          <Text style={styles.disclaimerText}>Dengan menekan tombol di atas, Anda menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan.</Text>
         </ScrollView>
-
       </KeyboardAvoidingView>
+
+      {/* =====================================================
+          VERIFICATION PENDING MODAL
+      ===================================================== */}
+      <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Hourglass Icon */}
+            <View style={styles.hourglassWrapper}>
+              <View style={styles.hourglassCircleMain}>
+                <View style={styles.hourglassIconContainer}>
+                  <View style={styles.hourglassTop} />
+                  <View style={styles.hourglassBottom} />
+                </View>
+              </View>
+            </View>
+
+            <Text style={styles.modalTitle}>Pengajuan Sedang Diverifikasi</Text>
+            <Text style={styles.modalSubtitle}>
+              Data profil dan berkas perusahaan Anda sedang ditinjau oleh Admin POLAR Polinela.
+            </Text>
+
+            {/* Email Box */}
+            <View style={styles.modalEmailCard}>
+              <Text style={styles.modalEmailLabel}>
+                Hasil verifikasi (Disetujui / Ditolak) akan dikirimkan melalui email:
+              </Text>
+              <Text style={styles.modalEmailValue}>{emailTerdaftar}</Text>
+              <Text style={styles.modalEstimation}>Estimasi peninjauan: 1-2 hari kerja</Text>
+            </View>
+
+            {/* Selesai Button */}
+            <TouchableOpacity
+              style={styles.selesaiButton}
+              activeOpacity={0.8}
+              onPress={() => {
+                setShowModal(false);
+                navigation.navigate('RoleSelection');
+              }}
+            >
+              <View style={styles.selesaiBtnContent}>
+                <Text style={styles.selesaiButtonText}>Selesai</Text>
+                <View style={{ marginLeft: 8 }}>
+                  <BoldArrow direction="right" color="#FFFFFF" size={16} />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
     </SafeAreaView>
   );
 };
 
-export default LengkapiProfilPerusahaan;
-
-// ================================================================
-// STYLES
-// ================================================================
-
 const styles = StyleSheet.create({
-
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#F4F8FC',
-  },
-
-  keyboardView: {
-    flex: 1,
-  },
-
-  scrollView: {
-    flex: 1,
-  },
-
-  scrollContent: {
-    paddingBottom: 30,
-  },
-
-  // ============================================================
-  // HEADER
-  // ============================================================
-
+  safeArea: { flex: 1, backgroundColor: '#FFFFFF' },
   header: {
-    height: 105,
+    height: Platform.OS === 'android' ? 64 + (StatusBar.currentHeight || 0) : 100,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) : 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8EE',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 25,
-    paddingTop: 30,
-  },
-
-  backButton: {
-    width: 42,
-    height: 42,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 7,
-  },
-
-  backArrow: {
-    color: '#062D47',
-    fontSize: 34,
-    fontWeight: '600',
-    lineHeight: 38,
-  },
-
-  logoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  logoBox: {
-    width: 43,
-    height: 43,
-    borderRadius: 10,
-    backgroundColor: '#0A3D5C',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
-  },
-
-  logoP: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: '900',
-  },
-
-  logoText: {
-    color: '#062D47',
-    fontSize: 23,
-    fontWeight: '800',
-    letterSpacing: 0.3,
-  },
-
-  // ============================================================
-  // INTRO
-  // ============================================================
-
-  pageIntro: {
-    paddingHorizontal: 47,
-    paddingTop: 25,
-    paddingBottom: 17,
-  },
-
-  pageTitle: {
-    color: '#062D47',
-    fontSize: 24,
-    fontWeight: '800',
-    lineHeight: 30,
-    marginBottom: 6,
-  },
-
-  pageSubtitle: {
-    color: '#4E5660',
-    fontSize: 17,
-    lineHeight: 25,
-  },
-
-  // ============================================================
-  // CARD
-  // ============================================================
-
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    marginHorizontal: 36,
-    marginBottom: 20,
-    paddingHorizontal: 21,
-    paddingTop: 23,
-    paddingBottom: 22,
-  },
-
-  cardTitle: {
-    color: '#062D47',
-    fontSize: 22,
-    fontWeight: '800',
-    lineHeight: 28,
-  },
-
-  cardDescription: {
-    color: '#505861',
-    fontSize: 16,
-    lineHeight: 22,
-    marginTop: 2,
-    marginBottom: 18,
-  },
-
-  // ============================================================
-  // FORM
-  // ============================================================
-
-  label: {
-    color: '#122B3D',
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 8,
-    marginTop: 14,
-  },
-
-  labelNoMargin: {
-    color: '#122B3D',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-
-  required: {
-    color: '#C52D2D',
-  },
-
-  input: {
-    height: 64,
-    backgroundColor: '#EAF3FD',
-    borderRadius: 15,
-    paddingHorizontal: 18,
-    color: '#172F42',
-    fontSize: 17,
-  },
-
-  addressInput: {
-    height: 118,
-    paddingTop: 16,
-    paddingBottom: 16,
-    lineHeight: 24,
-  },
-
-  selectInput: {
-    height: 64,
-    backgroundColor: '#EAF3FD',
-    borderRadius: 15,
-    paddingHorizontal: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  selectText: {
-    color: '#172F42',
-    fontSize: 17,
-    flex: 1,
-  },
-
-  placeholderText: {
-    color: '#7D8793',
-  },
-
-  chevron: {
-    color: '#44515C',
-    fontSize: 27,
-    fontWeight: '700',
-    marginLeft: 10,
-    marginTop: -7,
-  },
-
-  phoneInput: {
-    height: 64,
-    backgroundColor: '#EAF3FD',
-    borderRadius: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 18,
-  },
-
-  countryCode: {
-    color: '#343D45',
-    fontSize: 17,
-    fontWeight: '600',
-    marginRight: 13,
-  },
-
-  phoneTextInput: {
-    flex: 1,
-    height: 64,
-    color: '#172F42',
-    fontSize: 17,
-  },
-
-  labelRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 19,
-    marginBottom: 8,
-  },
-
-  registeredBadge: {
-    backgroundColor: '#CDE8FF',
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-  },
-
-  registeredText: {
-    color: '#4D5B66',
-    fontSize: 14,
-    fontWeight: '700',
-  },
-
-  emailInput: {
-    height: 64,
-    backgroundColor: '#DCECFB',
-    borderRadius: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 18,
-    paddingRight: 16,
-  },
-
-  emailTextInput: {
-    flex: 1,
-    color: '#4B5661',
-    fontSize: 17,
-  },
-
-  lockIcon: {
-    width: 28,
-    height: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  lockText: {
-    color: '#4C5963',
-    fontSize: 21,
-  },
-
-  helperText: {
-    color: '#5B636B',
-    fontSize: 15,
-    lineHeight: 21,
-    marginTop: 7,
-  },
-
-  websiteLabelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 18,
-    marginBottom: 8,
-  },
-
-  optionalText: {
-    color: '#555E66',
-    fontSize: 15,
-    marginLeft: 5,
-  },
-
-  // ============================================================
-  // DOCUMENT
-  // ============================================================
-
-  documentTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    marginTop: 2,
-    marginBottom: 10,
-  },
-
-  documentLabel: {
-    color: '#122B3D',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-
-  documentExamples: {
-    color: '#28658D',
-    fontSize: 15,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
-
-  uploadMain: {
-    height: 158,
-    backgroundColor: '#EAF3FD',
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-  },
-
-  uploadSelected: {
-    backgroundColor: '#DDEFFF',
-  },
-
-  uploadIconCircle: {
-    width: 55,
-    height: 55,
-    borderRadius: 30,
-    backgroundColor: '#A9D9FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-
-  uploadIcon: {
-    color: '#2C658C',
-    fontSize: 29,
-    fontWeight: '800',
-  },
-
-  fileIconCircle: {
-    width: 55,
-    height: 55,
-    borderRadius: 30,
-    backgroundColor: '#A9D9FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-
-  fileIcon: {
-    color: '#28658D',
-    fontSize: 28,
-    fontWeight: '900',
-  },
-
-  uploadTitle: {
-    color: '#062D47',
-    fontSize: 19,
-    fontWeight: '800',
-  },
-
-  uploadSubtitle: {
-    color: '#535D66',
-    fontSize: 16,
-    marginTop: 4,
-  },
-
-  selectedFileTitle: {
-    color: '#062D47',
-    fontSize: 17,
-    fontWeight: '800',
-    maxWidth: '90%',
-  },
-
-  selectedFileSubtitle: {
-    color: '#535D66',
-    fontSize: 14,
-    marginTop: 5,
-  },
-
-  removeButton: {
-    alignSelf: 'center',
-    marginTop: 8,
-    paddingVertical: 4,
-  },
-
-  removeSupportButton: {
-    alignSelf: 'flex-end',
-    marginTop: 7,
-    paddingVertical: 3,
-    paddingHorizontal: 4,
-  },
-
-  removeButtonText: {
-    color: '#B52D2D',
-    fontSize: 14,
-    fontWeight: '700',
-  },
-
-  supportTitleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginTop: 22,
-    marginBottom: 9,
-    paddingHorizontal: 7,
-  },
-
-  supportLabel: {
-    color: '#122B3D',
-    fontSize: 18,
-    fontWeight: '700',
-    lineHeight: 25,
-  },
-
-  supportExamples: {
-    color: '#4F565E',
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 21,
-    textAlign: 'right',
-  },
-
-  uploadSupport: {
-    minHeight: 84,
-    backgroundColor: '#E5F2FF',
-    borderRadius: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 18,
-  },
-
-  supportIconBox: {
-    width: 49,
-    height: 49,
-    borderRadius: 13,
-    backgroundColor: '#D0E8FC',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 14,
-  },
-
-  supportIcon: {
-    color: '#28658D',
-    fontSize: 25,
-    fontWeight: '700',
-  },
-
-  supportTextContainer: {
-    flex: 1,
-  },
-
-  supportUploadTitle: {
-    color: '#062D47',
-    fontSize: 17,
-    fontWeight: '800',
-  },
-
-  supportUploadSubtitle: {
-    color: '#535D66',
-    fontSize: 14,
-    marginTop: 2,
-  },
-
-  warningBox: {
-    backgroundColor: '#DDEFFF',
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginTop: 16,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-
-  warningIcon: {
-    color: '#28658D',
-    fontSize: 21,
-    fontWeight: '800',
-    marginRight: 11,
-    marginTop: 1,
-  },
-
-  warningText: {
-    flex: 1,
-    color: '#4D5963',
-    fontSize: 15,
-    lineHeight: 23,
-  },
-
-  // ============================================================
-  // INFO VERIFIKASI
-  // ============================================================
-
-  infoBox: {
-    marginHorizontal: 42,
-    backgroundColor: '#D7ECFF',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 18,
-    marginBottom: 25,
-  },
-
-  infoHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-
-  infoIconCircle: {
-    width: 31,
-    height: 31,
-    borderRadius: 18,
-    borderWidth: 2,
-    borderColor: '#2B678E',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-
-  infoIcon: {
-    color: '#2B678E',
-    fontSize: 19,
-    fontWeight: '800',
-  },
-
-  infoTitle: {
-    color: '#062D47',
-    fontSize: 19,
-    fontWeight: '800',
-  },
-
-  infoText: {
-    color: '#4D5963',
-    fontSize: 16,
-    lineHeight: 25,
-    paddingLeft: 43,
-  },
-
-  // ============================================================
-  // SUBMIT
-  // ============================================================
-
-  submitButton: {
-    height: 64,
-    marginHorizontal: 42,
-    backgroundColor: '#003B59',
-    borderRadius: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
-  },
-
-  submitText: {
-    color: '#FFFFFF',
-    fontSize: 19,
-    fontWeight: '800',
-  },
-
-  submitArrow: {
-    color: '#FFFFFF',
-    fontSize: 29,
-    fontWeight: '900',
-    marginLeft: 12,
-  },
-
-  bottomDisclaimer: {
-    color: '#555E66',
-    fontSize: 15,
-    lineHeight: 22,
-    textAlign: 'center',
-    paddingHorizontal: 55,
-  },
-
-  bottomSpace: {
-    height: 35,
-  },
-
+    borderBottomColor: '#F0F4F8',
+  },
+  backButton: { paddingRight: 10 },
+  backArrow: { fontSize: 28, color: '#062D47', fontWeight: 'bold' },
+  logoContainer: { flexDirection: 'row', alignItems: 'center' },
+  logoBox: { width: 34, height: 34, borderRadius: 8, backgroundColor: '#062D47', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  logoP: { color: '#FFFFFF', fontSize: 20, fontWeight: 'bold' },
+  logoText: { color: '#062D47', fontSize: 22, fontWeight: 'bold', letterSpacing: 1 },
+  profileCircle: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#062D47', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
+  profileIconInner: { alignItems: 'center', marginTop: 4 },
+  profileHead: { width: 11, height: 11, borderRadius: 5.5, backgroundColor: '#FFF' },
+  profileBody: { width: 22, height: 12, borderRadius: 6, backgroundColor: '#FFF', marginTop: 1 },
+  scrollContent: { flexGrow: 1, paddingBottom: 40, backgroundColor: '#F8FAFC' },
+  pageIntro: { paddingHorizontal: 24, paddingTop: 24, paddingBottom: 16 },
+  stepBadge: { alignSelf: 'flex-start', backgroundColor: '#E1EEF6', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, marginBottom: 12 },
+  stepBadgeText: { color: '#286184', fontSize: 12, fontWeight: 'bold' },
+  pageTitle: { fontSize: 24, fontWeight: 'bold', color: '#062D47', marginBottom: 8 },
+  pageSubtitle: { fontSize: 14, color: '#596771', lineHeight: 22 },
+  card: { marginHorizontal: 20, backgroundColor: '#FFFFFF', borderRadius: 16, padding: 20, marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 10, elevation: 2 },
+  cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#062D47', marginBottom: 4 },
+  cardDescription: { fontSize: 14, color: '#8A9BAA', marginBottom: 20 },
+  label: { fontSize: 14, fontWeight: 'bold', color: '#062D47', marginBottom: 8 },
+  labelNoMargin: { fontSize: 14, fontWeight: 'bold', color: '#062D47' },
+  required: { color: '#C53030' },
+  input: { height: 56, backgroundColor: '#F4F8FC', borderRadius: 12, paddingHorizontal: 16, fontSize: 15, color: '#062D47', marginBottom: 16 },
+  textArea: { height: 100, paddingTop: 16, textAlignVertical: 'top' },
+  selectInput: { height: 56, backgroundColor: '#F4F8FC', borderRadius: 12, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
+  selectText: { fontSize: 15, color: '#062D47' },
+  chevronDown: { fontSize: 12, color: '#8A9BAA' },
+  inputWrapperPhone: { height: 56, backgroundColor: '#F4F8FC', borderRadius: 12, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, marginBottom: 16 },
+  countryCode: { fontSize: 15, fontWeight: 'bold', color: '#062D47', marginRight: 12 },
+  inputPhone: { flex: 1, fontSize: 15, color: '#062D47' },
+  emailHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  verifiedBadge: { backgroundColor: '#E1EEF6', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
+  verifiedText: { color: '#286184', fontSize: 11, fontWeight: 'bold' },
+  emailDisplayBox: { height: 56, backgroundColor: '#EDF4FB', borderRadius: 12, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 },
+  emailText: { flex: 1, fontSize: 15, color: '#596771' },
+  lockIconSmall: { fontSize: 16, color: '#8A9BAA' },
+  emailHelper: { fontSize: 12, color: '#8A9BAA', marginTop: 6, marginBottom: 16 },
+  docLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginTop: 10, marginBottom: 8 },
+  labelSmall: { fontSize: 14, fontWeight: 'bold', color: '#062D47' },
+  docExample: { fontSize: 12, color: '#286184', fontWeight: '500' },
+  uploadBox: { height: 140, backgroundColor: '#F4F8FC', borderRadius: 16, borderStyle: 'dashed', borderWidth: 1.5, borderColor: '#D1E2EF', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  uploadBoxActive: { backgroundColor: '#E1EEF6', borderColor: '#286184', borderStyle: 'solid' },
+  uploadIconCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#D1E2EF', justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
+  uploadIcon: { fontSize: 24, color: '#286184', fontWeight: 'bold' },
+  uploadTitle: { fontSize: 15, fontWeight: 'bold', color: '#062D47', textAlign: 'center' },
+  uploadSubTitle: { fontSize: 12, color: '#8A9BAA', textAlign: 'center', marginTop: 4 },
+  uploadBoxSmall: { height: 70, backgroundColor: '#F4F8FC', borderRadius: 12, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, marginTop: 4 },
+  uploadIconCircleSmall: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#D1E2EF', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  uploadIconSmall: { fontSize: 20, color: '#286184', fontWeight: 'bold' },
+  uploadTitleSmall: { fontSize: 14, fontWeight: 'bold', color: '#062D47' },
+  uploadSubTitleSmall: { fontSize: 11, color: '#8A9BAA', marginTop: 2 },
+  noteBox: { flexDirection: 'row', backgroundColor: '#E1EEF6', padding: 12, borderRadius: 12, marginTop: 16 },
+  noteIcon: { fontSize: 14, color: '#286184', marginRight: 8, fontWeight: 'bold' },
+  noteText: { flex: 1, fontSize: 12, color: '#596771', lineHeight: 18 },
+  verifInfoBox: { marginHorizontal: 20, backgroundColor: '#EBF4FA', padding: 16, borderRadius: 16, marginBottom: 24 },
+  verifInfoHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  verifInfoIconCircle: { width: 24, height: 24, borderRadius: 12, borderWidth: 1.5, borderColor: '#286184', justifyContent: 'center', alignItems: 'center', marginRight: 10 },
+  verifInfoIcon: { color: '#286184', fontSize: 12, fontWeight: 'bold' },
+  verifInfoTitle: { fontSize: 15, fontWeight: 'bold', color: '#062D47' },
+  verifInfoText: { fontSize: 13, color: '#596771', lineHeight: 20, paddingLeft: 34 },
+  submitBtn: { marginHorizontal: 20, height: 56, backgroundColor: '#062D47', borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  submitBtnText: { color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' },
+  submitBtnArrow: { color: '#FFFFFF', fontSize: 24, marginLeft: 12, fontWeight: 'bold' },
+  disclaimerText: { fontSize: 12, color: '#8A9BAA', textAlign: 'center', marginHorizontal: 30, lineHeight: 18 },
+
+  // MODAL STYLES
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(5, 32, 48, 0.7)', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 },
+  modalContent: { width: '100%', backgroundColor: '#FFFFFF', borderRadius: 24, paddingVertical: 32, paddingHorizontal: 24, alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.25, shadowRadius: 10 },
+  hourglassWrapper: { marginBottom: 20 },
+  hourglassCircleMain: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#F1F8FF', justifyContent: 'center', alignItems: 'center' },
+  hourglassIconContainer: { width: 22, height: 28, justifyContent: 'space-between', alignItems: 'center' },
+  hourglassTop: { width: 0, height: 0, borderLeftWidth: 11, borderRightWidth: 11, borderTopWidth: 13, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderTopColor: '#063452' },
+  hourglassBottom: { width: 0, height: 0, borderLeftWidth: 11, borderRightWidth: 11, borderBottomWidth: 13, borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: '#063452' },
+  modalTitle: { fontSize: 22, fontWeight: 'bold', color: '#062D47', textAlign: 'center', marginBottom: 12 },
+  modalSubtitle: { fontSize: 15, color: '#596771', textAlign: 'center', lineHeight: 22, marginBottom: 24 },
+  modalEmailCard: { width: '100%', backgroundColor: '#F4F8FC', borderRadius: 16, padding: 18, alignItems: 'center', marginBottom: 32, borderWidth: 1, borderColor: '#EBF2F7' },
+  modalEmailLabel: { fontSize: 13, color: '#596771', textAlign: 'center', marginBottom: 10 },
+  modalEmailValue: { fontSize: 17, fontWeight: 'bold', color: '#062D47', marginBottom: 10 },
+  modalEstimation: { fontSize: 13, color: '#8A9BAA', fontWeight: '500' },
+  selesaiButton: { width: '100%', height: 56, backgroundColor: '#1B3D54', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  selesaiBtnContent: { flexDirection: 'row', alignItems: 'center' },
+  selesaiButtonText: { color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' },
 });
+export default LengkapiProfilPerusahaan;

@@ -71,6 +71,7 @@ const RoleCard = ({
 };
 
 export default function RoleSelectionScreen({ navigation }: any) {
+
   // ===============================
   // NAVIGASI PILIH ROLE
   // ===============================
@@ -80,11 +81,11 @@ export default function RoleSelectionScreen({ navigation }: any) {
   };
 
   const handleClient = () => {
-    console.log('Role Client dipilih');
+    navigation.navigate('LoginClient');
   };
 
   const handlePerusahaan = () => {
-    console.log('Role Perusahaan dipilih');
+    navigation.navigate('LoginPerusahaan');
   };
 
   return (
@@ -121,6 +122,7 @@ export default function RoleSelectionScreen({ navigation }: any) {
           </View>
         </View>
 
+
         {/* ================= WELCOME ================= */}
 
         <View style={styles.welcomeCard}>
@@ -134,6 +136,7 @@ export default function RoleSelectionScreen({ navigation }: any) {
             ekosistem profesional masa depan.
           </Text>
         </View>
+
 
         {/* ================= ROLE HEADER ================= */}
 
@@ -149,10 +152,12 @@ export default function RoleSelectionScreen({ navigation }: any) {
           </View>
         </View>
 
+
         <Text style={styles.roleSubtitle}>
           Pilih jenis akun yang ingin kamu gunakan untuk
           melanjutkan sesi.
         </Text>
+
 
         {/* ================= ROLE LIST ================= */}
 
@@ -168,6 +173,7 @@ export default function RoleSelectionScreen({ navigation }: any) {
             onPress={handleMahasiswa}
           />
 
+
           {/* CLIENT */}
 
           <RoleCard
@@ -177,6 +183,7 @@ export default function RoleSelectionScreen({ navigation }: any) {
             iconBackground="#DDF6F5"
             onPress={handleClient}
           />
+
 
           {/* PERUSAHAAN */}
 
@@ -189,6 +196,7 @@ export default function RoleSelectionScreen({ navigation }: any) {
           />
 
         </View>
+
 
         {/* ================= HELP ================= */}
 
@@ -210,11 +218,13 @@ export default function RoleSelectionScreen({ navigation }: any) {
   );
 }
 
+
 /* =====================================================
    STYLES
 ===================================================== */
 
 const styles = StyleSheet.create({
+
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.background,
@@ -223,6 +233,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 30,
   },
+
 
   /* ================= HEADER ================= */
 
@@ -291,6 +302,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
+
   /* ================= WELCOME ================= */
 
   welcomeCard: {
@@ -322,6 +334,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 20,
   },
+
 
   /* ================= ROLE ================= */
 
@@ -371,6 +384,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginHorizontal: 16,
   },
+
 
   /* ================= ROLE CARD ================= */
 
@@ -452,6 +466,7 @@ const styles = StyleSheet.create({
     marginTop: -2,
   },
 
+
   /* ================= HELP ================= */
 
   helpContainer: {
@@ -486,4 +501,5 @@ const styles = StyleSheet.create({
 
     textDecorationLine: 'underline',
   },
+
 });

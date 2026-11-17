@@ -45,25 +45,23 @@ const handleContinue = () => {
               contentContainerStyle={styles.container}>
 
               {/* ================= HEADER ================= */}
-              <View style={styles.header}>
+<View style={styles.header}>
+  <View style={styles.headerLeft}>
+    <TouchableOpacity
+      onPress={() => navigation.goBack()}
+      style={styles.backButton}
+      activeOpacity={0.7}
+    >
+      <Text style={styles.backText}>‹</Text>
+    </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={() => navigation.goBack()}
-                  style={styles.backButton}
-                  activeOpacity={0.7}>
-                  <Text style={styles.backText}>‹</Text>
-                </TouchableOpacity>
+    <Text style={styles.headerTitle}>Lupa Kata Sandi</Text>
+  </View>
 
-                {/* JUDUL HEADER */}
-                <Text style={styles.headerTitle}>
-                  Lupa Kata Sandi
-                </Text>
-
-                <View style={styles.profileCircle}>
-                  <Text style={styles.profileIcon}>♙</Text>
-                </View>
-
-              </View>
+  <View style={styles.profileCircle}>
+    <Text style={styles.profileIcon}>♙</Text>
+  </View>
+</View>
 
               {/* ================= CONTENT ================= */}
               <View style={styles.content}>
@@ -279,47 +277,56 @@ const handleContinue = () => {
          HEADER
       ===================================================== */
 
-      header: {
-        height: 92,
-        paddingHorizontal: 18,
-        paddingTop: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: '#F4F8FC',
-      },
+header: {
+  height: 88,
+  paddingHorizontal: 18,
+  paddingTop: 16,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  backgroundColor: '#F4F8FC',
+  borderBottomWidth: 1,
+  borderBottomColor: '#E8EFF4',
+},
 
-      backButton: {
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        transform: [{translateY: 8}],
-      },
+headerLeft: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
 
-      backText: {
-        fontSize: 36,
-        lineHeight: 40,
-        color: '#062D47',
-        fontWeight: '300',
-      },
+backButton: {
+  width: 38,
+  height: 40,
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  marginRight: 4,
+  transform: [{translateY: 7}],
+},
 
-      headerTitle: {
-        color: '#062D47',
-        fontSize: 16,
-        fontWeight: '800',
-        transform: [{translateY: 8}],
-      },
+backText: {
+  color: '#062D47',
+  fontSize: 36,
+  lineHeight: 40,
+  fontWeight: '300',
+},
 
-      profileCircle: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: '#063452',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transform: [{translateY: 8}],
-      },
+headerTitle: {
+  color: '#062D47',
+  fontSize: 16,
+  fontWeight: '800',
+  marginLeft: 2,
+  transform: [{translateY: 7}],
+},
+
+profileCircle: {
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  backgroundColor: '#063452',
+  justifyContent: 'center',
+  alignItems: 'center',
+  transform: [{translateY: 7}],
+},
 
       profileIcon: {
         color: '#FFFFFF',

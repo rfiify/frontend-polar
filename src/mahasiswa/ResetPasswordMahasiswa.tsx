@@ -82,30 +82,23 @@ export default function ResetPasswordMahasiswa({navigation}: Props) {
               HEADER
           ===================================================== */}
 
-          <View style={styles.header}>
+         <View style={styles.header}>
+           <View style={styles.headerLeft}>
+             <TouchableOpacity
+               onPress={() => navigation.goBack()}
+               style={styles.backButton}
+               activeOpacity={0.7}
+             >
+               <Text style={styles.backText}>‹</Text>
+             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.backButton}
-              activeOpacity={0.7}
-              onPress={() => navigation.goBack()}>
+             <Text style={styles.headerTitle}>Buat Kata Sandi Baru</Text>
+           </View>
 
-              <Text style={styles.backText}>
-                ‹
-              </Text>
-
-            </TouchableOpacity>
-
-            <Text style={styles.headerTitle}>
-              Buat Kata Sandi Baru
-            </Text>
-
-            <View style={styles.profileCircle}>
-              <Text style={styles.profileIcon}>
-                ♙
-              </Text>
-            </View>
-
-          </View>
+           <View style={styles.profileCircle}>
+             <Text style={styles.profileIcon}>♙</Text>
+           </View>
+         </View>
 
           {/* =====================================================
               CONTENT
@@ -542,11 +535,17 @@ header: {
   borderBottomColor: '#E8EFF4',
 },
 
+headerLeft: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+
 backButton: {
-  width: 40,
+  width: 38,
   height: 40,
   justifyContent: 'center',
   alignItems: 'flex-start',
+  marginRight: 4,
   transform: [{translateY: 7}],
 },
 
@@ -561,6 +560,7 @@ headerTitle: {
   color: '#062D47',
   fontSize: 16,
   fontWeight: '800',
+  marginLeft: 2,
   transform: [{translateY: 7}],
 },
 

@@ -17,15 +17,16 @@ const COLORS = {
   background: '#F3F8FC',
   white: '#FFFFFF',
   navy: '#062D47',
-  navyButton: '#173F5A',
-  text: '#263E4D',
+  navyDark: '#123F5A',
+  text: '#173A50',
   textSecondary: '#596771',
-  grey: '#7B8790',
-  input: '#F3F7FB',
   border: '#E8EEF3',
+  inputBg: '#EAF4FC',
   blueSoft: '#DCEFFC',
   blue: '#2B6B8E',
-  cyan: '#DFF5F7',
+  red: '#E53E3E',
+  green: '#38A169',
+  greyPlaceholder: '#858F98',
 };
 
 export default function ResetPasswordKlien({navigation}: any) {
@@ -39,636 +40,308 @@ export default function ResetPasswordKlien({navigation}: any) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const hasMinLength = password.length >= 8;
-
-  const hasUpperLower =
-    /[a-z]/.test(password) &&
-    /[A-Z]/.test(password);
-
-  const hasNumberOrSymbol =
-    /[0-9!@#$%^&*(),.?":{}|<>_\-+=]/.test(password);
+  const hasUpperLower = /[a-z]/.test(password) && /[A-Z]/.test(password);
+  const hasNumberOrSymbol = /[0-9!@#$%^&*(),.?":{}|<>_\-+=]/.test(password);
 
   const handleUpdate = () => {
-    if (!password) {
-      return;
-    }
-
-    if (!hasMinLength || !hasUpperLower || !hasNumberOrSymbol) {
-      return;
-    }
-
-    if (!konfirmasiPassword) {
-      return;
-    }
-
+    if (!password || !konfirmasiPassword) return;
+    if (!hasMinLength || !hasUpperLower || !hasNumberOrSymbol) return;
     if (password !== konfirmasiPassword) {
+      // Show error or handle mismatch
       return;
     }
-
-    /*
-      UI ONLY
-
-      Nanti bagian ini bisa disambungkan
-      ke endpoint reset password backend.
-    */
-
     setShowSuccess(true);
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={COLORS.white}
-        translucent={false}
-      />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
 
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={
-          Platform.OS === 'ios'
-            ? 'padding'
-            : undefined
-        }>
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+
+        {/* ================= HEADER ================= */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <View style={styles.backArrow}>
+              <View style={styles.backArrowLine} />
+              <View style={styles.backArrowTop} />
+              <View style={styles.backArrowBottom} />
+            </View>
+          </TouchableOpacity>
+
+          <Text style={styles.headerTitle}>Reset Kata Sandi</Text>
+
+          <View style={styles.headerProfile}>
+            <View style={styles.profileCircle}>
+              <View style={styles.profileHead} />
+              <View style={styles.profileBody} />
+            </View>
+          </View>
+        </View>
 
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled">
 
-          {/* =====================================================
-              HEADER
-          ===================================================== */}
-
-          <View style={styles.header}>
-
-            <TouchableOpacity
-              style={styles.backButton}
-              activeOpacity={0.7}
-              onPress={() => navigation.goBack()}>
-
-              <View style={styles.backArrow}>
-                <View style={styles.backArrowLine} />
-                <View style={styles.backArrowTop} />
-                <View style={styles.backArrowBottom} />
-              </View>
-
-            </TouchableOpacity>
-
-            <Text style={styles.headerTitle}>
-              Verifikasi Akun
-            </Text>
-
-            {/* PROFILE ICON */}
-
-            <View style={styles.profileCircle}>
-
-              <View style={styles.profileHead} />
-
-              <View style={styles.profileBody} />
-
-            </View>
-
-          </View>
-
-
-          {/* =====================================================
-              CONTENT
-          ===================================================== */}
-
           <View style={styles.content}>
 
             {/* BADGE */}
-
             <View style={styles.badge}>
-
-              <View style={styles.badgeIcon}>
-
-                <View style={styles.badgeKeyTop} />
-
-                <View style={styles.badgeKeyBody} />
-
+              <View style={styles.badgeDots}>
+                <View style={styles.badgeDot} />
+                <View style={styles.badgeDotSmall} />
               </View>
-
-              <Text style={styles.badgeText}>
-                PEMBARUAN KATA SANDI • POLAR KLIEN
-              </Text>
-
+              <Text style={styles.badgeText}>PEMBARUAN KATA SANDI • POLAR KLIEN</Text>
             </View>
 
-
-            {/* =================================================
-                KEY ICON
-            ================================================= */}
-
-            <View style={styles.keyIconArea}>
-
-              <View style={styles.keyOuterCircle}>
-
-                <View style={styles.keyCircle}>
-
-                  <View style={styles.keyRing}>
-
-                    <View style={styles.keyHole} />
-
-                  </View>
-
+            {/* KEY ILLUSTRATION */}
+            <View style={styles.illustrationArea}>
+              <View style={styles.circleBg}>
+                <View style={styles.keyIcon}>
+                  <View style={styles.keyRing} />
                   <View style={styles.keyStem} />
-
-                  <View style={styles.keyToothOne} />
-
-                  <View style={styles.keyToothTwo} />
-
+                  <View style={styles.keyTooth1} />
+                  <View style={styles.keyTooth2} />
                 </View>
-
               </View>
-
-
-              {/* SECURITY BADGE */}
-
-              <View style={styles.securityMiniBadge}>
-
-                <View style={styles.miniStar}>
-
-                  <View
-                    style={styles.miniStarHorizontal}
-                  />
-
-                  <View
-                    style={styles.miniStarVertical}
-                  />
-
+              <View style={styles.smallBadge}>
+                <View style={styles.starIcon}>
+                   <View style={styles.starH} />
+                   <View style={styles.starV} />
                 </View>
-
               </View>
-
             </View>
 
-
-            {/* =================================================
-                TITLE
-            ================================================= */}
-
-            <Text style={styles.mainTitle}>
-              Buat Kata Sandi Baru
-            </Text>
-
-
+            {/* TITLE & DESCRIPTION */}
+            <Text style={styles.mainTitle}>Buat Kata Sandi Baru</Text>
             <Text style={styles.description}>
-              Buat kombinasi kata sandi baru yang kuat untuk
-              menjaga keamanan akun bisnis, proyek, dan
-              dana escrow Anda.
+              Buat kombinasi kata sandi baru yang kuat untuk menjaga keamanan akun bisnis, proyek, dan dana escrow Anda.
             </Text>
 
-
-            {/* =================================================
-                FORM CARD
-            ================================================= */}
-
+            {/* FORM CARD */}
             <View style={styles.formCard}>
-
-              {/* PASSWORD */}
-
               <View style={styles.fieldHeader}>
-
-                <Text style={styles.fieldLabel}>
-                  Kata Sandi Baru
-                </Text>
-
-                <Text style={styles.checkingText}>
-                  {password.length > 0
-                    ? 'Memeriksa...'
-                    : ''}
-                </Text>
-
+                <Text style={styles.fieldLabel}>Kata Sandi Baru</Text>
+                {password.length > 0 && (
+                  <Text style={styles.checkingText}>Memeriksa...</Text>
+                )}
               </View>
-
 
               {/* PASSWORD INPUT */}
-
               <View style={styles.inputWrapper}>
-
-                <View style={styles.lockIcon}>
-
+                <View style={styles.inputIcon}>
                   <View style={styles.lockShackle} />
-
-                  <View style={styles.lockBody}>
-
-                    <View style={styles.lockHole} />
-
-                  </View>
-
+                  <View style={styles.lockBody} />
                 </View>
-
-
                 <TextInput
                   value={password}
                   onChangeText={setPassword}
                   placeholder="Minimal 8 karakter unik"
-                  placeholderTextColor="#858F98"
+                  placeholderTextColor={COLORS.greyPlaceholder}
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
-                  style={styles.passwordInput}
+                  style={styles.textInput}
                 />
-
-
-                {/* EYE */}
-
-                <TouchableOpacity
-                  style={styles.eyeButton}
-                  activeOpacity={0.7}
-                  onPress={() =>
-                    setShowPassword(!showPassword)
-                  }>
-
-                  <View style={styles.eyeOuter}>
-
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <View style={styles.eyeIcon}>
+                    <View style={styles.eyeOuter} />
                     <View style={styles.eyeInner} />
-
                   </View>
-
                 </TouchableOpacity>
-
               </View>
 
-
-              {/* PASSWORD STRENGTH */}
-
-              <View style={styles.strengthTrack}>
-
-                <View
-                  style={[
-                    styles.strengthFill,
-                    {
-                      width:
-                        password.length === 0
-                          ? '0%'
-                          : hasMinLength &&
-                            hasUpperLower &&
-                            hasNumberOrSymbol
-                          ? '100%'
-                          : password.length >= 5
-                          ? '60%'
-                          : '30%',
-                    },
-                  ]}
-                />
-
+              {/* STRENGTH INDICATOR */}
+              <View style={styles.strengthContainer}>
+                <View style={[
+                  styles.strengthBar,
+                  {
+                    width: password.length === 0 ? '0%' : (hasMinLength && hasUpperLower && hasNumberOrSymbol ? '100%' : '50%'),
+                    backgroundColor: password.length === 0 ? 'transparent' : (hasMinLength && hasUpperLower && hasNumberOrSymbol ? COLORS.green : COLORS.red)
+                  }
+                ]} />
               </View>
-
 
               {/* REQUIREMENTS */}
-
               <View style={styles.requirements}>
-
-                <Requirement
-                  text="Minimal 8 karakter"
-                  valid={hasMinLength}
-                />
-
-                <Requirement
-                  text="Kombinasi huruf besar & kecil (A-Z)"
-                  valid={hasUpperLower}
-                />
-
-                <Requirement
-                  text="Memuat angka (0-9) atau simbol unik (@$!#)"
-                  valid={hasNumberOrSymbol}
-                />
-
+                <Requirement text="Minimal 8 karakter" valid={hasMinLength} />
+                <Requirement text="Kombinasi huruf besar & kecil (A-Z)" valid={hasUpperLower} />
+                <Requirement text="Memuat angka (0-9) atau simbol unik (@$!#)" valid={hasNumberOrSymbol} />
               </View>
 
+              <Text style={styles.confirmLabel}>Konfirmasi Kata Sandi Baru</Text>
 
-              {/* CONFIRM PASSWORD */}
-
-              <Text style={styles.confirmLabel}>
-                Konfirmasi Kata Sandi Baru
-              </Text>
-
-
+              {/* CONFIRM INPUT */}
               <View style={styles.inputWrapper}>
-
-                <View style={styles.repeatIcon}>
-
+                <View style={styles.inputIcon}>
                   <View style={styles.repeatCircle} />
-
                   <View style={styles.repeatArrow} />
-
                 </View>
-
-
                 <TextInput
                   value={konfirmasiPassword}
                   onChangeText={setKonfirmasiPassword}
                   placeholder="Ulangi kata sandi baru"
-                  placeholderTextColor="#858F98"
+                  placeholderTextColor={COLORS.greyPlaceholder}
                   secureTextEntry={!showKonfirmasi}
                   autoCapitalize="none"
-                  style={styles.passwordInput}
+                  style={styles.textInput}
                 />
-
-
-                {/* EYE */}
-
-                <TouchableOpacity
-                  style={styles.eyeButton}
-                  activeOpacity={0.7}
-                  onPress={() =>
-                    setShowKonfirmasi(!showKonfirmasi)
-                  }>
-
-                  <View style={styles.eyeOuter}>
-
+                <TouchableOpacity onPress={() => setShowKonfirmasi(!showKonfirmasi)}>
+                  <View style={styles.eyeIcon}>
+                    <View style={styles.eyeOuter} />
                     <View style={styles.eyeInner} />
-
                   </View>
-
                 </TouchableOpacity>
-
               </View>
 
-
-              {/* INFO */}
-
+              {/* INFO BOX */}
               <View style={styles.infoBox}>
-
                 <View style={styles.infoCircle}>
-
-                  <Text style={styles.infoText}>
-                    i
-                  </Text>
-
+                   <Text style={styles.infoChar}>i</Text>
                 </View>
-
-
-                <Text style={styles.infoDescription}>
-                  Pastikan kata sandi baru berbeda dari kata
-                  sandi sebelumnya untuk keamanan optimal
-                  seluruh kontrak proyek POLAR Anda.
+                <Text style={styles.infoText}>
+                  Pastikan kata sandi baru berbeda dari kata sandi sebelumnya untuk keamanan optimal seluruh kontrak proyek POLAR Anda.
                 </Text>
-
               </View>
 
-
-              {/* UPDATE BUTTON */}
-
+              {/* PRIMARY BUTTON */}
               <TouchableOpacity
-                style={styles.updateButton}
-                activeOpacity={0.85}
-                onPress={handleUpdate}>
-
-                <Text style={styles.updateButtonText}>
-                  Perbarui Kata Sandi
-                </Text>
-
-                <View style={styles.buttonArrow}>
-
-                  <View
-                    style={styles.buttonArrowLine}
-                  />
-
-                  <View
-                    style={styles.buttonArrowHead}
-                  />
-
+                style={[
+                  styles.primaryButton,
+                  (!password || !konfirmasiPassword) && {opacity: 0.7}
+                ]}
+                onPress={handleUpdate}
+              >
+                <Text style={styles.primaryButtonText}>Perbarui Kata Sandi</Text>
+                <View style={styles.arrowIcon}>
+                  <View style={styles.arrowLine} />
+                  <View style={styles.arrowHead} />
                 </View>
-
               </TouchableOpacity>
 
             </View>
 
           </View>
-
         </ScrollView>
-
       </KeyboardAvoidingView>
 
-
-      {/* ========================================================
-          SUCCESS POPUP
-      ======================================================== */}
-
-      <Modal
-        transparent
-        visible={showSuccess}
-        animationType="fade"
-        onRequestClose={() =>
-          setShowSuccess(false)
-        }>
-
+      {/* ================= SUCCESS MODAL ================= */}
+      <Modal transparent visible={showSuccess} animationType="fade">
         <View style={styles.modalOverlay}>
-
           <View style={styles.modalCard}>
-
-            {/* SUCCESS ICON */}
-
             <View style={styles.successIconCircle}>
-
-              <Text style={styles.successCheck}>
-                ✓
-              </Text>
-
+              <Text style={styles.checkText}>✓</Text>
             </View>
-
-
-            {/* TITLE */}
-
-            <Text style={styles.modalTitle}>
-              Kata Sandi Berhasil Diperbarui
-            </Text>
-
-
-            {/* DESCRIPTION */}
-
+            <Text style={styles.modalTitle}>Kata Sandi Berhasil Diperbarui</Text>
             <Text style={styles.modalDescription}>
-              Kata sandi akun Klien Anda telah aktif.
-              Silakan masuk kembali menggunakan kredensial
-              baru Anda untuk melanjutkan pengelolaan proyek
-              & escrow.
+              Kata sandi akun Klien Anda telah aktif. Silakan masuk kembali menggunakan kredensial baru Anda untuk melanjutkan pengelolaan proyek & escrow.
             </Text>
-
-
-            {/* LOGIN BUTTON */}
-
             <TouchableOpacity
               style={styles.modalButton}
-              activeOpacity={0.85}
               onPress={() => {
-
                 setShowSuccess(false);
-
-                navigation.navigate(
-                  'LoginKlien',
-                );
-
-              }}>
-
-              <Text style={styles.modalButtonText}>
-                Masuk ke Akun Klien
-              </Text>
-
-              <Text style={styles.modalArrow}>
-                →
-              </Text>
-
+                navigation.navigate('LoginKlien');
+              }}
+            >
+              <Text style={styles.modalButtonText}>Masuk ke Akun Klien</Text>
+              <View style={styles.arrowIconSmall}>
+                <View style={styles.arrowLineSmall} />
+                <View style={styles.arrowHeadSmall} />
+              </View>
             </TouchableOpacity>
-
-
-            {/* FOOTER */}
-
-            <Text style={styles.modalFooter}>
-              ♢ Enkripsi SSL 256-Bit • Rekening Escrow Terlindungi
-            </Text>
-
           </View>
-
         </View>
-
       </Modal>
 
     </SafeAreaView>
   );
 }
 
-
-/* =========================================================
-   REQUIREMENT COMPONENT
-========================================================= */
-
-function Requirement({
-  text,
-  valid,
-}: {
-  text: string;
-  valid: boolean;
-}) {
+function Requirement({text, valid}: {text: string, valid: boolean}) {
   return (
-    <View style={styles.requirementRow}>
-
-      <View
-        style={[
-          styles.requirementCircle,
-          valid &&
-            styles.requirementCircleValid,
-        ]}>
-
-        <View
-          style={[
-            styles.requirementCheck,
-            valid &&
-              styles.requirementCheckValid,
-          ]}
-        />
-
+    <View style={styles.reqRow}>
+      <View style={[styles.reqDot, valid && styles.reqDotValid]}>
+        {valid && <Text style={styles.checkTiny}>✓</Text>}
       </View>
-
-
-      <Text
-        style={[
-          styles.requirementText,
-          valid &&
-            styles.requirementTextValid,
-        ]}>
-
-        {text}
-
-      </Text>
-
+      <Text style={[styles.reqText, valid && styles.reqTextValid]}>{text}</Text>
     </View>
   );
 }
 
-
-/* =========================================================
-   STYLES
-========================================================= */
-
 const styles = StyleSheet.create({
-
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.background,
   },
-
   flex: {
     flex: 1,
   },
-
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 35,
+    paddingBottom: 40,
   },
-
-  content: {
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-
-
-  /* =====================================================
-     HEADER
-  ===================================================== */
-
   header: {
-    height: 100,
-    paddingTop: 32,
-    paddingHorizontal: 18,
+    height: 110, // Increased height to lower it
+    paddingTop: 45, // More padding to avoid status bar clock
     backgroundColor: COLORS.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#E7EDF2',
+    borderBottomColor: '#F0F0F0',
   },
-
   backButton: {
     width: 40,
     height: 40,
     justifyContent: 'center',
   },
-
   backArrow: {
-    width: 22,
-    height: 22,
+    width: 20,
+    height: 20,
     justifyContent: 'center',
   },
-
   backArrowLine: {
-    width: 19,
+    width: 18,
     height: 2,
     backgroundColor: COLORS.navy,
     borderRadius: 1,
-    marginLeft: 2,
   },
-
   backArrowTop: {
-    position: 'absolute',
     width: 10,
     height: 2,
     backgroundColor: COLORS.navy,
     borderRadius: 1,
-    left: 1,
-    top: 6,
+    position: 'absolute',
+    top: 5,
+    left: 0,
     transform: [{rotate: '-45deg'}],
   },
-
   backArrowBottom: {
-    position: 'absolute',
     width: 10,
     height: 2,
     backgroundColor: COLORS.navy,
     borderRadius: 1,
-    left: 1,
-    bottom: 6,
+    position: 'absolute',
+    bottom: 5,
+    left: 0,
     transform: [{rotate: '45deg'}],
   },
-
   headerTitle: {
     fontSize: 16,
     fontWeight: '700',
     color: COLORS.navy,
   },
-
+  headerProfile: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
   profileCircle: {
     width: 32,
     height: 32,
@@ -678,684 +351,451 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
-
   profileHead: {
     width: 9,
     height: 9,
-    borderRadius: 5,
+    borderRadius: 4.5,
     backgroundColor: COLORS.white,
-    marginTop: 3,
+    marginTop: 4,
   },
-
   profileBody: {
     width: 16,
-    height: 9,
-    borderTopLeftRadius: 9,
-    borderTopRightRadius: 9,
+    height: 10,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     backgroundColor: COLORS.white,
-    marginTop: 2,
+    marginTop: 1,
   },
-
-
-  /* =====================================================
-     BADGE
-  ===================================================== */
-
+  content: {
+    alignItems: 'center',
+    paddingHorizontal: 25,
+    paddingTop: 15,
+  },
   badge: {
-    marginTop: 12,
-    backgroundColor: COLORS.blueSoft,
-    borderRadius: 15,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
+    backgroundColor: '#E7F2FC',
+    paddingHorizontal: 15,
+    paddingVertical: 6,
+    borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 20,
   },
-
-  badgeIcon: {
-    width: 14,
-    height: 14,
-    marginRight: 5,
-    justifyContent: 'center',
+  badgeDots: {
+    flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 6,
   },
-
-  badgeKeyTop: {
-    width: 7,
-    height: 5,
-    borderWidth: 1.2,
-    borderColor: COLORS.blue,
+  badgeDot: {
+    width: 6,
+    height: 6,
     borderRadius: 3,
-    position: 'absolute',
-    top: 1,
+    backgroundColor: '#2D6B8E',
+    marginRight: 3,
   },
-
-  badgeKeyBody: {
-    width: 10,
-    height: 2,
-    backgroundColor: COLORS.blue,
-    transform: [{rotate: '45deg'}],
-    marginTop: 5,
-  },
-
-  badgeText: {
-    fontSize: 9.5,
-    color: COLORS.blue,
-    fontWeight: '800',
-    letterSpacing: 0.25,
-  },
-
-
-  /* =====================================================
-     KEY ICON
-  ===================================================== */
-
-  keyIconArea: {
-    marginTop: 17,
-    position: 'relative',
-  },
-
-  keyOuterCircle: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    backgroundColor: '#DCEFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  keyCircle: {
-    width: 53,
-    height: 53,
-    borderRadius: 27,
-    backgroundColor: COLORS.navy,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-
-  keyRing: {
-    width: 17,
-    height: 17,
-    borderRadius: 9,
-    borderWidth: 2.2,
-    borderColor: COLORS.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: -13,
-  },
-
-  keyHole: {
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: COLORS.white,
-  },
-
-  keyStem: {
-    position: 'absolute',
-    width: 21,
-    height: 3,
-    backgroundColor: COLORS.white,
-    left: 24,
-    top: 25,
+  badgeDotSmall: {
+    width: 4,
+    height: 4,
     borderRadius: 2,
-    transform: [{rotate: '-5deg'}],
+    backgroundColor: '#2D6B8E',
+    opacity: 0.6,
   },
-
-  keyToothOne: {
-    position: 'absolute',
-    width: 5,
-    height: 6,
-    backgroundColor: COLORS.white,
-    left: 39,
-    top: 27,
+  badgeText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#2D6B8E',
+    letterSpacing: 0.5,
   },
-
-  keyToothTwo: {
-    position: 'absolute',
-    width: 5,
-    height: 6,
-    backgroundColor: COLORS.white,
-    left: 44,
-    top: 25,
+  illustrationArea: {
+    width: 120,
+    height: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
-
-  securityMiniBadge: {
-    position: 'absolute',
+  circleBg: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#EBF5FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  keyIcon: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  keyRing: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: COLORS.white,
-    right: -4,
-    bottom: 0,
+    borderWidth: 3,
+    borderColor: COLORS.blue,
+  },
+  keyStem: {
+    width: 3,
+    height: 20,
+    backgroundColor: COLORS.blue,
+    marginTop: -2,
+  },
+  keyTooth1: {
+    width: 8,
+    height: 3,
+    backgroundColor: COLORS.blue,
+    position: 'absolute',
+    right: 8,
+    bottom: 8,
+  },
+  keyTooth2: {
+    width: 8,
+    height: 3,
+    backgroundColor: COLORS.blue,
+    position: 'absolute',
+    right: 8,
+    bottom: 2,
+  },
+  smallBadge: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: COLORS.navyDark,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#8DE1E1',
+    borderColor: COLORS.background,
+  },
+  starIcon: {
+    width: 12,
+    height: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  miniStar: {
-    width: 9,
-    height: 9,
-    borderWidth: 1,
-    borderColor: '#58C8CC',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  miniStarHorizontal: {
+  starH: {
+    width: 12,
+    height: 2,
+    backgroundColor: COLORS.white,
     position: 'absolute',
-    width: 7,
-    height: 1,
-    backgroundColor: '#58C8CC',
   },
-
-  miniStarVertical: {
+  starV: {
+    width: 2,
+    height: 12,
+    backgroundColor: COLORS.white,
     position: 'absolute',
-    width: 1,
-    height: 7,
-    backgroundColor: '#58C8CC',
   },
-
-
-  /* =====================================================
-     TITLE
-  ===================================================== */
-
   mainTitle: {
-    marginTop: 12,
-    color: COLORS.navy,
-    fontSize: 21,
+    fontSize: 28,
     fontWeight: '800',
+    color: COLORS.navy,
     textAlign: 'center',
+    marginBottom: 5,
   },
-
   description: {
-    marginTop: 5,
-    color: '#4F5961',
     fontSize: 14,
-    lineHeight: 21,
+    color: COLORS.textSecondary,
     textAlign: 'center',
-    paddingHorizontal: 14,
+    paddingHorizontal: 10,
+    lineHeight: 20,
+    marginBottom: 20,
   },
-
-
-  /* =====================================================
-     FORM CARD
-  ===================================================== */
-
   formCard: {
     width: '100%',
     backgroundColor: COLORS.white,
-    borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingTop: 17,
-    paddingBottom: 16,
-    marginTop: 17,
+    borderRadius: 16,
+    padding: 20,
     borderWidth: 1,
-    borderColor: '#EDF1F4',
+    borderColor: '#EDF1F5',
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.03,
+    shadowRadius: 15,
+    elevation: 3,
   },
-
   fieldHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 9,
+    alignItems: 'center',
+    marginBottom: 10,
   },
-
   fieldLabel: {
-    color: COLORS.navy,
     fontSize: 14,
     fontWeight: '800',
+    color: COLORS.navy,
   },
-
   checkingText: {
-    color: COLORS.blue,
     fontSize: 11,
     fontWeight: '600',
+    color: COLORS.blue,
   },
-
-
-  /* =====================================================
-     INPUT
-  ===================================================== */
-
   inputWrapper: {
-    height: 48,
-    borderRadius: 9,
-    backgroundColor: COLORS.input,
+    height: 50,
+    backgroundColor: COLORS.inputBg,
+    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 13,
+    paddingHorizontal: 15,
+    marginBottom: 10,
   },
-
-  passwordInput: {
-    flex: 1,
-    color: COLORS.navy,
-    fontSize: 14,
-    paddingVertical: 0,
-    marginLeft: 9,
-  },
-
-
-  /* =====================================================
-     LOCK
-  ===================================================== */
-
-  lockIcon: {
-    width: 18,
-    height: 20,
-    justifyContent: 'flex-end',
+  inputIcon: {
+    marginRight: 12,
+    width: 20,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-
   lockShackle: {
     width: 10,
     height: 8,
     borderWidth: 2,
-    borderColor: '#59636A',
+    borderColor: COLORS.blue,
     borderBottomWidth: 0,
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
-
   lockBody: {
     width: 14,
-    height: 11,
-    borderRadius: 2,
-    backgroundColor: '#59636A',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  lockHole: {
-    width: 3,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: COLORS.white,
-  },
-
-
-  /* =====================================================
-     EYE
-  ===================================================== */
-
-  eyeButton: {
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  eyeOuter: {
-    width: 19,
-    height: 12,
-    borderWidth: 1.7,
-    borderColor: '#68737A',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  eyeInner: {
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: '#68737A',
-  },
-
-
-  /* =====================================================
-     STRENGTH
-  ===================================================== */
-
-  strengthTrack: {
-    height: 5,
-    backgroundColor: '#DCEFFC',
-    borderRadius: 3,
-    marginTop: 11,
-    overflow: 'hidden',
-  },
-
-  strengthFill: {
-    height: '100%',
+    height: 10,
     backgroundColor: COLORS.blue,
-    borderRadius: 3,
+    borderRadius: 2,
   },
-
-
-  /* =====================================================
-     REQUIREMENTS
-  ===================================================== */
-
-  requirements: {
-    marginTop: 12,
-    gap: 6,
-  },
-
-  requirementRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  requirementCircle: {
-    width: 13,
-    height: 13,
-    borderRadius: 7,
-    borderWidth: 1.4,
-    borderColor: '#7D8990',
-    marginRight: 7,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  requirementCircleValid: {
-    borderColor: COLORS.blue,
-  },
-
-  requirementCheck: {
-    width: 5,
-    height: 3,
-    borderLeftWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#7D8990',
-    transform: [{rotate: '-45deg'}],
-    marginTop: -1,
-  },
-
-  requirementCheckValid: {
-    borderColor: COLORS.blue,
-  },
-
-  requirementText: {
-    color: '#59636A',
-    fontSize: 12,
-    lineHeight: 16,
-  },
-
-  requirementTextValid: {
-    color: '#43545E',
-  },
-
-
-  /* =====================================================
-     CONFIRM
-  ===================================================== */
-
-  confirmLabel: {
-    color: COLORS.navy,
+  textInput: {
+    flex: 1,
     fontSize: 14,
-    fontWeight: '800',
-    marginTop: 16,
-    marginBottom: 9,
+    color: COLORS.navy,
+    fontWeight: '600',
   },
-
-  repeatIcon: {
-    width: 18,
+  eyeIcon: {
+    width: 20,
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  repeatCircle: {
-    width: 13,
-    height: 13,
-    borderRadius: 7,
+  eyeOuter: {
+    width: 18,
+    height: 10,
     borderWidth: 2,
-    borderColor: '#59636A',
-    borderTopColor: 'transparent',
+    borderColor: '#A0AEC0',
+    borderRadius: 5,
   },
-
+  eyeInner: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#A0AEC0',
+    position: 'absolute',
+  },
+  strengthContainer: {
+    height: 4,
+    backgroundColor: '#E2E8F0',
+    borderRadius: 2,
+    marginBottom: 15,
+    overflow: 'hidden',
+  },
+  strengthBar: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  requirements: {
+    marginBottom: 20,
+  },
+  reqRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  reqDot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: '#E2E8F0',
+    marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  reqDotValid: {
+    backgroundColor: COLORS.green,
+  },
+  checkTiny: {
+    color: COLORS.white,
+    fontSize: 9,
+    fontWeight: '900',
+  },
+  reqText: {
+    fontSize: 12,
+    color: '#718096',
+    fontWeight: '500',
+  },
+  reqTextValid: {
+    color: COLORS.navy,
+    fontWeight: '600',
+  },
+  confirmLabel: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: COLORS.navy,
+    marginBottom: 10,
+  },
+  repeatCircle: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 1.5,
+    borderColor: COLORS.blue,
+  },
   repeatArrow: {
     width: 6,
     height: 6,
-    borderTopWidth: 2,
-    borderLeftWidth: 2,
-    borderColor: '#59636A',
-    position: 'absolute',
-    top: 1,
-    left: 2,
-    transform: [{rotate: '-15deg'}],
-  },
-
-
-  /* =====================================================
-     INFO
-  ===================================================== */
-
-  infoBox: {
-    marginTop: 14,
-    backgroundColor: '#DCEEFF',
-    borderRadius: 9,
-    paddingHorizontal: 11,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-
-  infoCircle: {
-    width: 17,
-    height: 17,
-    borderRadius: 9,
-    borderWidth: 1.5,
+    borderTopWidth: 1.5,
+    borderRightWidth: 1.5,
     borderColor: COLORS.blue,
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    transform: [{rotate: '45deg'}],
+  },
+  infoBox: {
+    backgroundColor: '#F7FAFC',
+    borderRadius: 10,
+    padding: 12,
+    flexDirection: 'row',
+    marginBottom: 25,
+  },
+  infoCircle: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#CBD5E0',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 1,
-    marginRight: 9,
+    marginRight: 10,
+    marginTop: 2,
   },
-
-  infoText: {
-    color: COLORS.blue,
-    fontSize: 11,
+  infoChar: {
+    color: COLORS.white,
+    fontSize: 10,
     fontWeight: '800',
   },
-
-  infoDescription: {
+  infoText: {
     flex: 1,
-    color: '#53616A',
-    fontSize: 11.5,
-    lineHeight: 17,
+    fontSize: 11,
+    color: '#718096',
+    lineHeight: 16,
   },
-
-
-  /* =====================================================
-     UPDATE BUTTON
-  ===================================================== */
-
-  updateButton: {
-    height: 48,
-    borderRadius: 10,
-    backgroundColor: COLORS.navyButton,
-    marginTop: 18,
+  primaryButton: {
+    width: '100%',
+    height: 54,
+    backgroundColor: COLORS.navyDark,
+    borderRadius: 14,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 3,
-    elevation: 3,
   },
-
-  updateButtonText: {
-    color: COLORS.white,
-    fontSize: 14,
+  primaryButtonText: {
+    fontSize: 15,
     fontWeight: '800',
+    color: COLORS.white,
   },
-
-  buttonArrow: {
-    width: 17,
-    height: 17,
-    marginLeft: 9,
+  arrowIcon: {
+    marginLeft: 12,
+    width: 20,
+    height: 20,
     justifyContent: 'center',
   },
-
-  buttonArrowLine: {
-    width: 14,
+  arrowLine: {
+    width: 16,
     height: 2,
     backgroundColor: COLORS.white,
     borderRadius: 1,
   },
-
-  buttonArrowHead: {
+  arrowHead: {
+    width: 10,
+    height: 10,
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderColor: COLORS.white,
+    transform: [{rotate: '45deg'}],
+    position: 'absolute',
+    right: 0,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 25,
+  },
+  modalCard: {
+    width: '100%',
+    backgroundColor: COLORS.white,
+    borderRadius: 24,
+    padding: 30,
+    alignItems: 'center',
+  },
+  successIconCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#E6FFFA',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  checkText: {
+    fontSize: 35,
+    color: COLORS.green,
+    fontWeight: 'bold',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: COLORS.navy,
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  modalDescription: {
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 25,
+  },
+  modalButton: {
+    width: '100%',
+    height: 54,
+    backgroundColor: COLORS.navyDark,
+    borderRadius: 14,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: COLORS.white,
+  },
+  arrowIconSmall: {
+    marginLeft: 10,
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+  },
+  arrowLineSmall: {
+    width: 12,
+    height: 2,
+    backgroundColor: COLORS.white,
+    borderRadius: 1,
+  },
+  arrowHeadSmall: {
     width: 7,
     height: 7,
     borderTopWidth: 2,
     borderRightWidth: 2,
     borderColor: COLORS.white,
+    transform: [{rotate: '45deg'}],
     position: 'absolute',
     right: 0,
-    transform: [{rotate: '45deg'}],
   },
-
-
-  /* =====================================================
-     SUCCESS MODAL OVERLAY
-  ===================================================== */
-
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(8, 35, 52, 0.55)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-  },
-
-
-  /* =====================================================
-     SUCCESS MODAL CARD
-  ===================================================== */
-
-  modalCard: {
-    width: '100%',
-    backgroundColor: COLORS.white,
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingTop: 14,
-    paddingBottom: 18,
-    alignItems: 'center',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    elevation: 12,
-  },
-
-
-  /* =====================================================
-     SUCCESS ICON
-  ===================================================== */
-
-  successIconCircle: {
-    width: 62,
-    height: 62,
-    borderRadius: 31,
-    backgroundColor: '#E4F3FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 0,
-    marginBottom: 8,
-  },
-
-  successCheck: {
-    width: 31,
-    height: 31,
-    borderRadius: 16,
-    backgroundColor: '#2B6689',
-    color: COLORS.white,
-    fontSize: 20,
-    fontWeight: '900',
-    textAlign: 'center',
-    lineHeight: 31,
-    overflow: 'hidden',
-  },
-
-
-  /* =====================================================
-     MODAL TITLE
-  ===================================================== */
-
-  modalTitle: {
-    color: COLORS.navy,
-    fontSize: 17,
-    fontWeight: '800',
-    textAlign: 'center',
-    marginTop: 0,
-    marginBottom: 8,
-  },
-
-
-  /* =====================================================
-     MODAL DESCRIPTION
-  ===================================================== */
-
-  modalDescription: {
-    color: '#596771',
-    fontSize: 11.5,
-    lineHeight: 17,
-    textAlign: 'center',
-    paddingHorizontal: 5,
-    marginBottom: 15,
-  },
-
-
-  /* =====================================================
-     MODAL BUTTON
-  ===================================================== */
-
-  modalButton: {
-    width: '100%',
-    height: 44,
-    borderRadius: 9,
-    backgroundColor: COLORS.navyButton,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-
-  modalButtonText: {
-    color: COLORS.white,
-    fontSize: 13,
-    fontWeight: '800',
-  },
-
-  modalArrow: {
-    color: COLORS.white,
-    fontSize: 20,
-    fontWeight: '400',
-    marginLeft: 8,
-    marginTop: -2,
-  },
-
-
-  /* =====================================================
-     MODAL FOOTER
-  ===================================================== */
-
-  modalFooter: {
-    color: '#6C767D',
-    fontSize: 8.5,
-    textAlign: 'center',
-    marginTop: 12,
-  },
-
 });

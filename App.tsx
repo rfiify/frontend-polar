@@ -27,6 +27,7 @@ import ResetPasswordPerusahaan from './src/perusahaan/ResetPasswordPerusahaan';
 import RegistrasiPerusahaanScreen from './src/perusahaan/RegistrasiPerusahaanScreen';
 import VerifikasiOTPRegistrasiPerusahaan from './src/perusahaan/VerifikasiOTPRegistrasiPerusahaan';
 import LengkapiProfilPerusahaan from './src/perusahaan/LengkapiProfilPerusahaan';
+import DashboardPerusahaan from './src/perusahaan/DashboardPerusahaan';
 
 
 // ===============================
@@ -36,6 +37,8 @@ import LoginKlienScreen from './src/klien/LoginKlienScreen';
 import ResetPasswordKlien from './src/klien/ResetPasswordKlien';
 import LupaPasswordKlien from './src/klien/LupaPasswordKlien';
 import VerifikasiOTPLupaPasswordKlien from './src/klien/VerifikasiOTPLupaPasswordKlien';
+import RegistrasiKlienScreen from './src/klien/RegistrasiKlienScreen';
+import VerifikasiOTPRegistrasiKlien from './src/klien/VerifikasiOTPRegistrasiKlien';
 
 const Stack = createNativeStackNavigator();
 
@@ -154,6 +157,24 @@ export default function App() {
         <Stack.Screen
           name="ResetPasswordKlien"
           component={ResetPasswordKlien}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="RegistrasiKlien"
+          component={RegistrasiKlienScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="VerifikasiOTPRegistrasiKlien"
+          component={VerifikasiOTPRegistrasiKlien}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="DashboardPerusahaan"
+          component={DashboardPerusahaan}
           options={{headerShown: false}}
         />
 

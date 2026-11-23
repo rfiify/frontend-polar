@@ -7,7 +7,42 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Image,
 } from 'react-native';
+
+/*
+|--------------------------------------------------------------------------
+| ASSETS
+|--------------------------------------------------------------------------
+| Semua file PNG diletakkan di:
+| src/assets/
+|
+| Kalau nama file PNG lu berbeda, tinggal ubah nama file di sini.
+|--------------------------------------------------------------------------
+*/
+
+const logoPolar = require('../assets/logoPolar.png');
+
+const iconBell = require('../assets/iconBell.png');
+const iconProfile = require('../assets/iconProfile.png');
+
+const iconCompany = require('../assets/perusahaan/iconCompany.png');
+const iconVerified = require('../assets/perusahaan/iconVerified.png');
+
+const iconBriefcase = require('../assets/perusahaan/iconBriefcase.png');
+const iconUsers = require('../assets/perusahaan/iconUsers.png');
+const iconVerification = require('../assets/perusahaan/iconVerification.png');
+
+const iconList = require('../assets/perusahaan/iconList.png');
+const iconApplicant = require('../assets/perusahaan/iconApplicant.png');
+const iconClock = require('../assets/perusahaan/iconClock.png');
+const iconCheck = require('../assets/perusahaan/iconCheck.png');
+
+const navHome = require('../assets/navbar/navHome.png');
+const navJobs = require('../assets/navbar/navJobs.png');
+const navTalenta = require('../assets/navbar/navTalenta.png');
+const navChat = require('../assets/navbar/navChat.png');
+const navProfile = require('../assets/navbar/navProfile.png');
 
 const DashboardPerusahaan = ({navigation}: any) => {
   return (
@@ -18,26 +53,34 @@ const DashboardPerusahaan = ({navigation}: any) => {
         translucent={false}
       />
 
-      {/* ================================================= */}
-      {/* HEADER */}
-      {/* ================================================= */}
+      {/* =========================================================
+          HEADER
+      ========================================================= */}
 
       <View style={styles.header}>
         <View style={styles.headerLeft}>
 
           {/* LOGO POLAR */}
-          <View style={styles.logoBox}>
-            <Text style={styles.logoP}>P</Text>
-          </View>
+          <Image
+            source={logoPolar}
+            style={styles.logoPolar}
+            resizeMode="contain"
+          />
 
           <View style={styles.headerInfo}>
 
             <View style={styles.polarRow}>
-              <Text style={styles.polarText}>POLAR</Text>
+
+              <Text style={styles.polarText}>
+                POLAR
+              </Text>
 
               <View style={styles.mitraBadge}>
-                <Text style={styles.mitraText}>Mitra</Text>
+                <Text style={styles.mitraText}>
+                  Mitra
+                </Text>
               </View>
+
             </View>
 
             <Text style={styles.berandaText}>
@@ -45,6 +88,7 @@ const DashboardPerusahaan = ({navigation}: any) => {
             </Text>
 
           </View>
+
         </View>
 
         {/* HEADER KANAN */}
@@ -54,38 +98,51 @@ const DashboardPerusahaan = ({navigation}: any) => {
             activeOpacity={0.8}
             style={styles.notificationButton}>
 
-            <Text style={styles.bellIcon}>♧</Text>
+            <Image
+              source={iconBell}
+              style={styles.bellImage}
+              resizeMode="contain"
+            />
 
             <View style={styles.headerNotificationDot} />
+
           </TouchableOpacity>
 
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.profileButton}>
 
-            <Text style={styles.profileIcon}>♙</Text>
+            <Image
+              source={iconProfile}
+              style={styles.profileImage}
+              resizeMode="contain"
+            />
 
           </TouchableOpacity>
 
         </View>
       </View>
 
-      {/* ================================================= */}
-      {/* CONTENT */}
-      {/* ================================================= */}
+      {/* =========================================================
+          CONTENT
+      ========================================================= */}
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}>
 
-        {/* ================================================= */}
-        {/* WELCOME CARD */}
-        {/* ================================================= */}
+        {/* =========================================================
+            WELCOME CARD
+        ========================================================= */}
 
         <View style={styles.welcomeCard}>
 
           <View style={styles.companyIcon}>
-            <Text style={styles.companyIconText}>▣</Text>
+            <Image
+              source={iconCompany}
+              style={styles.companyIconImage}
+              resizeMode="contain"
+            />
           </View>
 
           <View style={styles.welcomeContent}>
@@ -102,16 +159,20 @@ const DashboardPerusahaan = ({navigation}: any) => {
                 PT Contoh Perusahaan
               </Text>
 
-              <Text style={styles.verifiedIcon}>
-                ✓
-              </Text>
+              <Image
+                source={iconVerified}
+                style={styles.verifiedImage}
+                resizeMode="contain"
+              />
 
             </View>
 
             <View style={styles.recruitmentBadge}>
+
               <Text style={styles.recruitmentText}>
                 Mitra Rekrutmen Polinela
               </Text>
+
             </View>
 
           </View>
@@ -120,9 +181,9 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
         </View>
 
-        {/* ================================================= */}
-        {/* RINGKASAN */}
-        {/* ================================================= */}
+        {/* =========================================================
+            RINGKASAN REKRUTMEN
+        ========================================================= */}
 
         <View style={styles.sectionHeader}>
 
@@ -139,16 +200,18 @@ const DashboardPerusahaan = ({navigation}: any) => {
           </View>
 
           <View style={styles.realtimeBadge}>
+
             <Text style={styles.realtimeText}>
               Realtime
             </Text>
+
           </View>
 
         </View>
 
-        {/* ================================================= */}
-        {/* STATISTIK */}
-        {/* ================================================= */}
+        {/* =========================================================
+            STATISTIK
+        ========================================================= */}
 
         <View style={styles.statsRow}>
 
@@ -158,9 +221,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
             <View style={styles.statTop}>
 
               <View style={styles.darkIcon}>
-                <Text style={styles.darkIconText}>
-                  □
-                </Text>
+
+                <Image
+                  source={iconBriefcase}
+                  style={styles.statIconImage}
+                  resizeMode="contain"
+                />
+
               </View>
 
               <Text style={styles.statStatus}>
@@ -191,9 +258,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
             <View style={styles.statTop}>
 
               <View style={styles.blueIcon}>
-                <Text style={styles.blueIconText}>
-                  ♙
-                </Text>
+
+                <Image
+                  source={iconUsers}
+                  style={styles.statIconImage}
+                  resizeMode="contain"
+                />
+
               </View>
 
               <Text style={styles.statStatus}>
@@ -218,18 +289,22 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
         </View>
 
-        {/* ================================================= */}
-        {/* PERLU DIVERIFIKASI */}
-        {/* ================================================= */}
+        {/* =========================================================
+            PERLU DIVERIFIKASI
+        ========================================================= */}
 
         <TouchableOpacity
           activeOpacity={0.85}
           style={styles.verificationCard}>
 
           <View style={styles.verificationIcon}>
-            <Text style={styles.verificationIconText}>
-              !
-            </Text>
+
+            <Image
+              source={iconVerification}
+              style={styles.verificationImage}
+              resizeMode="contain"
+            />
+
           </View>
 
           <View style={styles.verificationContent}>
@@ -241,9 +316,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
               </Text>
 
               <View style={styles.actionBadge}>
+
                 <Text style={styles.actionText}>
                   Tindakan Diperlukan
                 </Text>
+
               </View>
 
             </View>
@@ -261,16 +338,18 @@ const DashboardPerusahaan = ({navigation}: any) => {
           </View>
 
           <View style={styles.verificationArrow}>
+
             <Text style={styles.arrowText}>
               →
             </Text>
+
           </View>
 
         </TouchableOpacity>
 
-        {/* ================================================= */}
-        {/* MANAJEMEN LOWONGAN */}
-        {/* ================================================= */}
+        {/* =========================================================
+            MANAJEMEN LOWONGAN
+        ========================================================= */}
 
         <View style={styles.managementHeader}>
 
@@ -288,10 +367,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
         <TouchableOpacity
           activeOpacity={0.85}
-          style={styles.addJobButton}>
+          style={styles.addJobButton}
+          onPress={() => navigation.navigate('TambahLowongan')}>
 
           <Text style={styles.addJobIcon}>
-            ＋
+            ⊕
           </Text>
 
           <Text style={styles.addJobText}>
@@ -307,9 +387,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
           style={styles.allJobsCard}>
 
           <View style={styles.allJobsIcon}>
-            <Text style={styles.allJobsIconText}>
-              ▤
-            </Text>
+
+            <Image
+              source={iconList}
+              style={styles.allJobsIconImage}
+              resizeMode="contain"
+            />
+
           </View>
 
           <View style={styles.allJobsContent}>
@@ -330,9 +414,9 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
         </TouchableOpacity>
 
-        {/* ================================================= */}
-        {/* NOTIFIKASI */}
-        {/* ================================================= */}
+        {/* =========================================================
+            NOTIFIKASI
+        ========================================================= */}
 
         <View style={styles.notificationHeader}>
 
@@ -347,9 +431,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
           </View>
 
           <TouchableOpacity activeOpacity={0.7}>
+
             <Text style={styles.seeAll}>
               Lihat Semua
             </Text>
+
           </TouchableOpacity>
 
         </View>
@@ -361,9 +447,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
           style={styles.notificationCard}>
 
           <View style={styles.notificationIcon}>
-            <Text style={styles.notificationIconText}>
-              +
-            </Text>
+
+            <Image
+              source={iconApplicant}
+              style={styles.notificationImage}
+              resizeMode="contain"
+            />
+
           </View>
 
           <View style={styles.notificationContent}>
@@ -376,9 +466,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
             <View style={styles.timeRow}>
 
-              <Text style={styles.timeIcon}>
-                ◷
-              </Text>
+              <Image
+                source={iconClock}
+                style={styles.timeImage}
+                resizeMode="contain"
+              />
 
               <Text style={styles.timeText}>
                 10 menit lalu
@@ -399,9 +491,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
           style={styles.notificationCard}>
 
           <View style={styles.notificationIcon}>
-            <Text style={styles.notificationIconText}>
-              !
-            </Text>
+
+            <Image
+              source={iconVerification}
+              style={styles.notificationImage}
+              resizeMode="contain"
+            />
+
           </View>
 
           <View style={styles.notificationContent}>
@@ -414,9 +510,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
             <View style={styles.timeRow}>
 
-              <Text style={styles.timeIcon}>
-                ◷
-              </Text>
+              <Image
+                source={iconClock}
+                style={styles.timeImage}
+                resizeMode="contain"
+              />
 
               <Text style={styles.timeText}>
                 45 menit lalu
@@ -437,9 +535,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
           style={styles.notificationCard}>
 
           <View style={styles.notificationIcon}>
-            <Text style={styles.notificationIconText}>
-              ✓
-            </Text>
+
+            <Image
+              source={iconCheck}
+              style={styles.notificationImage}
+              resizeMode="contain"
+            />
+
           </View>
 
           <View style={styles.notificationContent}>
@@ -452,9 +554,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
             <View style={styles.timeRow}>
 
-              <Text style={styles.timeIcon}>
-                ◷
-              </Text>
+              <Image
+                source={iconClock}
+                style={styles.timeImage}
+                resizeMode="contain"
+              />
 
               <Text style={styles.timeText}>
                 2 jam lalu
@@ -470,9 +574,9 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
       </ScrollView>
 
-      {/* ================================================= */}
-      {/* BOTTOM NAVIGATION */}
-      {/* ================================================= */}
+      {/* =========================================================
+          BOTTOM NAVIGATION
+      ========================================================= */}
 
       <View style={styles.bottomNavigation}>
 
@@ -481,9 +585,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
           activeOpacity={0.8}
           style={styles.bottomItem}>
 
-          <Text style={styles.bottomIconActive}>
-            ⌂
-          </Text>
+          <Image
+            source={navHome}
+            style={styles.bottomImageActive}
+            resizeMode="contain"
+          />
 
           <Text style={styles.bottomActiveText}>
             Beranda
@@ -496,9 +602,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
           activeOpacity={0.8}
           style={styles.bottomItem}>
 
-          <Text style={styles.bottomIcon}>
-            □
-          </Text>
+          <Image
+            source={navJobs}
+            style={styles.bottomImage}
+            resizeMode="contain"
+          />
 
           <Text style={styles.bottomText}>
             Lowongan
@@ -511,9 +619,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
           activeOpacity={0.8}
           style={styles.bottomItem}>
 
-          <Text style={styles.bottomIcon}>
-            ♙
-          </Text>
+          <Image
+            source={navTalenta}
+            style={styles.bottomImage}
+            resizeMode="contain"
+          />
 
           <Text style={styles.bottomText}>
             Talenta
@@ -526,9 +636,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
           activeOpacity={0.8}
           style={styles.bottomItem}>
 
-          <Text style={styles.bottomIcon}>
-            ▢
-          </Text>
+          <Image
+            source={navChat}
+            style={styles.bottomImage}
+            resizeMode="contain"
+          />
 
           <Text style={styles.bottomText}>
             Chat
@@ -541,9 +653,11 @@ const DashboardPerusahaan = ({navigation}: any) => {
           activeOpacity={0.8}
           style={styles.bottomItem}>
 
-          <Text style={styles.bottomIcon}>
-            ▣
-          </Text>
+          <Image
+            source={navProfile}
+            style={styles.bottomImage}
+            resizeMode="contain"
+          />
 
           <Text style={styles.bottomText}>
             Profil
@@ -574,48 +688,30 @@ const styles = StyleSheet.create({
   // HEADER
   // =================================================
 
-  header: {
-    height: 112,
+header: {
+  height: 108,
+  backgroundColor: '#F8FAFD',
 
-    backgroundColor: '#F8FAFD',
+  flexDirection: 'row',
+  alignItems: 'flex-end',
+  justifyContent: 'space-between',
 
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
+  paddingHorizontal: 20,
+  paddingTop: 28,
+  paddingBottom: 14,
 
-    paddingHorizontal: 20,
-
-    // DITURUNKAN LAGI
-    paddingTop: 48,
-    paddingBottom: 12,
-
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEF1F4',
-  },
+  borderBottomWidth: 1,
+  borderBottomColor: '#EEF2F6',
+},
 
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
 
-  logoBox: {
-    width: 40,
-    height: 40,
-
-    borderRadius: 9,
-
-    backgroundColor: '#173F5B',
-
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  logoP: {
-    color: '#FFFFFF',
-
-    fontSize: 22,
-
-    fontWeight: '800',
+  logoPolar: {
+    width: 43,
+    height: 43,
   },
 
   headerInfo: {
@@ -629,11 +725,8 @@ const styles = StyleSheet.create({
 
   polarText: {
     color: '#082F47',
-
     fontSize: 21,
-
     lineHeight: 23,
-
     fontWeight: '800',
   },
 
@@ -650,17 +743,13 @@ const styles = StyleSheet.create({
 
   mitraText: {
     color: '#326B8A',
-
     fontSize: 11,
-
     fontWeight: '700',
   },
 
   berandaText: {
     color: '#555C61',
-
     fontSize: 12,
-
     marginTop: 2,
   },
 
@@ -670,21 +759,18 @@ const styles = StyleSheet.create({
   },
 
   notificationButton: {
-    width: 36,
-    height: 38,
+    width: 38,
+    height: 40,
 
     alignItems: 'center',
     justifyContent: 'center',
 
-    marginRight: 6,
+    marginRight: 7,
   },
 
-  bellIcon: {
-    fontSize: 27,
-
-    color: '#27343D',
-
-    fontWeight: '700',
+  bellImage: {
+    width: 25,
+    height: 25,
   },
 
   headerNotificationDot: {
@@ -697,15 +783,15 @@ const styles = StyleSheet.create({
 
     backgroundColor: '#326B8A',
 
-    top: 5,
+    top: 4,
     right: 2,
   },
 
   profileButton: {
-    width: 38,
-    height: 38,
+    width: 40,
+    height: 40,
 
-    borderRadius: 19,
+    borderRadius: 20,
 
     backgroundColor: '#002D46',
 
@@ -713,12 +799,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  profileIcon: {
-    color: '#FFFFFF',
-
-    fontSize: 23,
-
-    fontWeight: '700',
+  profileImage: {
+    width: 24,
+    height: 24,
   },
 
   // =================================================
@@ -727,10 +810,8 @@ const styles = StyleSheet.create({
 
   scrollContent: {
     paddingHorizontal: 18,
-
     paddingTop: 19,
-
-    paddingBottom: 0,
+    paddingBottom: 18,
   },
 
   // =================================================
@@ -748,7 +829,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
 
     flexDirection: 'row',
-
     alignItems: 'center',
 
     paddingHorizontal: 14,
@@ -767,55 +847,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  companyIconText: {
-    color: '#FFFFFF',
-
-    fontSize: 28,
-
-    fontWeight: '700',
+  companyIconImage: {
+    width: 31,
+    height: 31,
   },
 
   welcomeContent: {
     flex: 1,
-
     marginLeft: 11,
   },
 
   welcomeText: {
     color: '#4E555A',
-
     fontSize: 13,
-
     lineHeight: 16,
   },
 
   companyNameRow: {
     flexDirection: 'row',
-
     alignItems: 'center',
-
     marginTop: 2,
   },
 
   companyName: {
     color: '#082F47',
-
     fontSize: 18,
-
     lineHeight: 22,
-
     fontWeight: '800',
-
     flexShrink: 1,
   },
 
-  verifiedIcon: {
-    color: '#326B8A',
-
-    fontSize: 18,
-
-    fontWeight: '900',
-
+  verifiedImage: {
+    width: 20,
+    height: 20,
     marginLeft: 4,
   },
 
@@ -834,9 +898,7 @@ const styles = StyleSheet.create({
 
   recruitmentText: {
     color: '#326B8A',
-
     fontSize: 10,
-
     fontWeight: '700',
   },
 
@@ -857,13 +919,10 @@ const styles = StyleSheet.create({
 
   sectionHeader: {
     marginTop: 27,
-
     marginBottom: 12,
 
     flexDirection: 'row',
-
     justifyContent: 'space-between',
-
     alignItems: 'flex-start',
   },
 
@@ -875,7 +934,6 @@ const styles = StyleSheet.create({
     color: '#082F47',
 
     fontSize: 20,
-
     lineHeight: 24,
 
     fontWeight: '800',
@@ -885,7 +943,6 @@ const styles = StyleSheet.create({
     color: '#555C61',
 
     fontSize: 12,
-
     lineHeight: 15,
 
     marginTop: 3,
@@ -906,7 +963,6 @@ const styles = StyleSheet.create({
     color: '#4D555A',
 
     fontSize: 10,
-
     fontWeight: '600',
   },
 
@@ -916,7 +972,6 @@ const styles = StyleSheet.create({
 
   statsRow: {
     flexDirection: 'row',
-
     gap: 9,
   },
 
@@ -937,9 +992,7 @@ const styles = StyleSheet.create({
 
   statTop: {
     flexDirection: 'row',
-
     alignItems: 'center',
-
     justifyContent: 'space-between',
   },
 
@@ -955,14 +1008,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  darkIconText: {
-    color: '#FFFFFF',
-
-    fontSize: 26,
-
-    fontWeight: '700',
-  },
-
   blueIcon: {
     width: 41,
     height: 41,
@@ -975,19 +1020,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  blueIconText: {
-    color: '#326B8A',
-
-    fontSize: 26,
-
-    fontWeight: '700',
+  statIconImage: {
+    width: 25,
+    height: 25,
   },
 
   statStatus: {
     color: '#326B8A',
 
     fontSize: 10,
-
     fontWeight: '700',
   },
 
@@ -995,32 +1036,30 @@ const styles = StyleSheet.create({
     color: '#062D47',
 
     fontSize: 30,
-
     lineHeight: 33,
 
-    fontWeight: '800',
+    fontWeight: '900',
 
-    marginTop: 7,
+    marginTop: 10,
   },
 
   statTitle: {
-    color: '#082F47',
+    color: '#173F5B',
 
     fontSize: 14,
-
     lineHeight: 18,
 
     fontWeight: '800',
+
+    marginTop: 2,
   },
 
   statDescription: {
-    color: '#5B6267',
+    color: '#737A7F',
 
     fontSize: 10,
 
-    lineHeight: 13,
-
-    marginTop: 2,
+    marginTop: 4,
   },
 
   // =================================================
@@ -1028,289 +1067,249 @@ const styles = StyleSheet.create({
   // =================================================
 
   verificationCard: {
-    height: 88,
+    minHeight: 123,
 
-    marginTop: 10,
+    marginTop: 14,
 
-    borderRadius: 14,
+    borderRadius: 15,
 
-    borderWidth: 1,
-    borderColor: '#F0F1F2',
-
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#EAF4FF',
 
     flexDirection: 'row',
-
     alignItems: 'center',
 
-    paddingLeft: 12,
-
-    overflow: 'hidden',
+    paddingHorizontal: 13,
+    paddingVertical: 13,
   },
 
   verificationIcon: {
-    width: 41,
-    height: 41,
+    width: 45,
+    height: 45,
 
-    borderRadius: 9,
+    borderRadius: 12,
 
-    backgroundColor: '#D7EBFC',
+    backgroundColor: '#C5E4FA',
 
     alignItems: 'center',
     justifyContent: 'center',
   },
 
-  verificationIconText: {
-    color: '#173F5B',
-
-    fontSize: 25,
-
-    fontWeight: '900',
+  verificationImage: {
+    width: 27,
+    height: 27,
   },
 
   verificationContent: {
     flex: 1,
-
     marginLeft: 11,
   },
 
   verificationTop: {
     flexDirection: 'row',
-
     alignItems: 'center',
   },
 
   verificationNumber: {
-    color: '#082F47',
+    color: '#173F5B',
 
-    fontSize: 18,
-
-    lineHeight: 21,
-
-    fontWeight: '800',
+    fontSize: 25,
+    fontWeight: '900',
   },
 
   actionBadge: {
-    marginLeft: 6,
+    marginLeft: 8,
 
-    backgroundColor: '#D6EAFB',
+    backgroundColor: '#C6E2F8',
 
-    paddingHorizontal: 7,
-    paddingVertical: 3,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
 
-    borderRadius: 8,
+    borderRadius: 10,
   },
 
   actionText: {
-    color: '#4D555A',
+    color: '#326B8A',
 
-    fontSize: 8,
-
-    fontWeight: '600',
+    fontSize: 9,
+    fontWeight: '700',
   },
 
   verificationTitle: {
-    color: '#082F47',
+    color: '#173F5B',
 
-    fontSize: 14,
-
-    lineHeight: 17,
-
+    fontSize: 16,
     fontWeight: '800',
 
     marginTop: 2,
   },
 
   verificationDescription: {
-    color: '#5A6166',
+    color: '#65717A',
 
-    fontSize: 9,
+    fontSize: 10,
+    lineHeight: 15,
 
-    lineHeight: 12,
-
-    marginTop: 2,
+    marginTop: 3,
   },
 
   verificationArrow: {
-    width: 67,
-    height: 67,
+    width: 45,
+    height: 45,
 
-    borderRadius: 34,
+    borderRadius: 23,
 
-    backgroundColor: '#E5F2FD',
-
-    marginRight: -22,
+    backgroundColor: '#DCEEFF',
 
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   arrowText: {
-    color: '#082F47',
+    color: '#173F5B',
 
-    fontSize: 28,
-
-    fontWeight: '700',
+    fontSize: 27,
+    fontWeight: '300',
   },
 
   // =================================================
-  // MANAGEMENT
+  // MANAJEMEN
   // =================================================
 
   managementHeader: {
-    marginTop: 27,
-
-    marginBottom: 11,
-
     flexDirection: 'row',
 
     alignItems: 'center',
-
     justifyContent: 'space-between',
+
+    marginTop: 27,
+    marginBottom: 11,
   },
 
   managementTitle: {
     color: '#082F47',
 
     fontSize: 19,
-
-    lineHeight: 23,
-
     fontWeight: '800',
   },
 
   quickAccess: {
-    color: '#555C61',
+    color: '#777E83',
 
-    fontSize: 10,
+    fontSize: 11,
+    fontWeight: '500',
   },
 
   addJobButton: {
-    height: 43,
+    height: 58,
 
-    borderRadius: 10,
+    borderRadius: 11,
 
-    backgroundColor: '#002F48',
+    backgroundColor: '#103F5D',
 
     flexDirection: 'row',
-
     alignItems: 'center',
 
     justifyContent: 'center',
+
+    paddingHorizontal: 15,
   },
 
   addJobIcon: {
     color: '#FFFFFF',
 
-    fontSize: 22,
+    fontSize: 28,
+    fontWeight: '300',
 
-    fontWeight: '500',
+    marginRight: 8,
   },
 
   addJobText: {
     color: '#FFFFFF',
 
-    fontSize: 13,
-
-    fontWeight: '800',
-
-    marginLeft: 6,
+    fontSize: 15,
+    fontWeight: '700',
   },
 
   allJobsCard: {
-    height: 63,
+    minHeight: 73,
 
-    marginTop: 8,
+    marginTop: 10,
 
-    borderRadius: 12,
-
-    borderWidth: 1,
-    borderColor: '#F0F1F2',
+    borderRadius: 13,
 
     backgroundColor: '#FFFFFF',
 
-    paddingHorizontal: 9,
+    borderWidth: 1,
+    borderColor: '#EEF1F4',
 
     flexDirection: 'row',
-
     alignItems: 'center',
+
+    paddingHorizontal: 12,
   },
 
   allJobsIcon: {
-    width: 39,
-    height: 39,
+    width: 42,
+    height: 42,
 
-    borderRadius: 9,
+    borderRadius: 11,
 
-    backgroundColor: '#DDEFFC',
+    backgroundColor: '#E5F2FC',
 
     alignItems: 'center',
     justifyContent: 'center',
   },
 
-  allJobsIconText: {
-    color: '#326B8A',
-
-    fontSize: 23,
-
-    fontWeight: '700',
+  allJobsIconImage: {
+    width: 24,
+    height: 24,
   },
 
   allJobsContent: {
     flex: 1,
-
     marginLeft: 10,
   },
 
   allJobsTitle: {
-    color: '#082F47',
+    color: '#173F5B',
 
-    fontSize: 12,
-
-    lineHeight: 15,
-
+    fontSize: 14,
     fontWeight: '800',
   },
 
   allJobsDescription: {
-    color: '#5B6267',
+    color: '#777E83',
 
-    fontSize: 9,
+    fontSize: 10,
 
-    lineHeight: 12,
-
-    marginTop: 2,
+    marginTop: 4,
   },
 
   chevron: {
-    color: '#73797D',
+    color: '#777E83',
 
-    fontSize: 26,
+    fontSize: 29,
+    fontWeight: '300',
 
-    fontWeight: '500',
-
-    marginRight: 3,
+    marginLeft: 7,
   },
 
   // =================================================
-  // NOTIFICATION
+  // NOTIFIKASI
   // =================================================
 
   notificationHeader: {
-    marginTop: 27,
-
-    marginBottom: 11,
-
     flexDirection: 'row',
 
     alignItems: 'center',
-
     justifyContent: 'space-between',
+
+    marginTop: 27,
+    marginBottom: 10,
   },
 
   notificationTitleRow: {
     flexDirection: 'row',
-
     alignItems: 'center',
   },
 
@@ -1318,9 +1317,6 @@ const styles = StyleSheet.create({
     color: '#082F47',
 
     fontSize: 19,
-
-    lineHeight: 23,
-
     fontWeight: '800',
   },
 
@@ -1332,71 +1328,63 @@ const styles = StyleSheet.create({
 
     backgroundColor: '#326B8A',
 
-    marginLeft: 5,
+    marginLeft: 7,
   },
 
   seeAll: {
     color: '#326B8A',
 
-    fontSize: 10,
-
-    fontWeight: '700',
+    fontSize: 11,
+    fontWeight: '600',
   },
 
   notificationCard: {
-    minHeight: 70,
+    minHeight: 78,
 
-    marginBottom: 8,
-
-    borderRadius: 12,
-
-    borderWidth: 1,
-    borderColor: '#F0F1F2',
+    borderRadius: 13,
 
     backgroundColor: '#FFFFFF',
 
-    paddingHorizontal: 9,
-    paddingVertical: 9,
+    borderWidth: 1,
+    borderColor: '#EEF1F4',
 
     flexDirection: 'row',
+    alignItems: 'center',
 
-    alignItems: 'flex-start',
+    paddingHorizontal: 12,
+
+    marginBottom: 8,
   },
 
   notificationIcon: {
-    width: 39,
-    height: 39,
+    width: 42,
+    height: 42,
 
-    borderRadius: 9,
+    borderRadius: 11,
 
-    backgroundColor: '#B5DFF9',
+    backgroundColor: '#E5F2FC',
 
     alignItems: 'center',
     justifyContent: 'center',
   },
 
-  notificationIconText: {
-    color: '#326B8A',
-
-    fontSize: 23,
-
-    fontWeight: '800',
+  notificationImage: {
+    width: 24,
+    height: 24,
   },
 
   notificationContent: {
     flex: 1,
-
     marginLeft: 10,
   },
 
   notificationMessage: {
-    color: '#082F47',
+    color: '#173F5B',
 
-    fontSize: 11,
+    fontSize: 12,
+    lineHeight: 17,
 
-    lineHeight: 15,
-
-    fontWeight: '800',
+    fontWeight: '600',
   },
 
   timeRow: {
@@ -1404,36 +1392,35 @@ const styles = StyleSheet.create({
 
     alignItems: 'center',
 
-    marginTop: 3,
+    marginTop: 5,
   },
 
-  timeIcon: {
-    color: '#73797D',
+  timeImage: {
+    width: 13,
+    height: 13,
 
-    fontSize: 15,
+    marginRight: 4,
   },
 
   timeText: {
-    color: '#73797D',
+    color: '#777E83',
 
     fontSize: 9,
-
-    marginLeft: 3,
   },
 
   notificationDot: {
-    width: 6,
-    height: 6,
+    width: 7,
+    height: 7,
 
-    borderRadius: 3,
+    borderRadius: 4,
 
     backgroundColor: '#326B8A',
 
-    marginTop: 3,
+    marginLeft: 6,
   },
 
   bottomSpacer: {
-    height: 18,
+    height: 20,
   },
 
   // =================================================
@@ -1441,68 +1428,55 @@ const styles = StyleSheet.create({
   // =================================================
 
   bottomNavigation: {
-    height: 64,
+    height: 67,
 
     backgroundColor: '#FFFFFF',
 
     borderTopWidth: 1,
-
-    borderTopColor: '#ECEFF1',
+    borderTopColor: '#EEF1F4',
 
     flexDirection: 'row',
-
     alignItems: 'center',
-
     justifyContent: 'space-around',
 
-    paddingHorizontal: 3,
+    paddingHorizontal: 4,
   },
 
   bottomItem: {
     flex: 1,
 
     alignItems: 'center',
-
     justifyContent: 'center',
+
+    height: 63,
   },
 
-  bottomIcon: {
-    color: '#4F555A',
-
-    fontSize: 21,
-
-    fontWeight: '700',
+  bottomImage: {
+    width: 23,
+    height: 23,
   },
 
-  bottomIconActive: {
-    color: '#082F47',
-
-    fontSize: 22,
-
-    fontWeight: '800',
+  bottomImageActive: {
+    width: 24,
+    height: 24,
   },
 
   bottomText: {
-    color: '#4F555A',
+    color: '#858C91',
 
-    fontSize: 10,
+    fontSize: 9,
 
-    lineHeight: 13,
-
-    fontWeight: '600',
-
-    marginTop: 2,
+    marginTop: 3,
   },
 
   bottomActiveText: {
     color: '#082F47',
 
-    fontSize: 10,
+    fontSize: 9,
 
-    lineHeight: 13,
+    fontWeight: '700',
 
-    fontWeight: '800',
-
-    marginTop: 2,
+    marginTop: 3,
   },
+
 });

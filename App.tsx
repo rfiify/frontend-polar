@@ -28,6 +28,8 @@ import RegistrasiPerusahaanScreen from './src/perusahaan/RegistrasiPerusahaanScr
 import VerifikasiOTPRegistrasiPerusahaan from './src/perusahaan/VerifikasiOTPRegistrasiPerusahaan';
 import LengkapiProfilPerusahaan from './src/perusahaan/LengkapiProfilPerusahaan';
 import DashboardPerusahaan from './src/perusahaan/DashboardPerusahaan';
+import TambahLowonganScreen from './src/perusahaan/TambahLowonganScreen';
+import LowonganBerhasilDitambahkanScreen from './src/perusahaan/LowonganBerhasilDitambahkanScreen';
 
 
 // ===============================
@@ -134,6 +136,24 @@ export default function App() {
           component={LengkapiProfilPerusahaan}
         />
 
+        <Stack.Screen
+         name="DashboardPerusahaan"
+          component={DashboardPerusahaan}
+          options={{headerShown: false}}
+         />
+
+        <Stack.Screen
+          name="TambahLowongan"
+          component={TambahLowonganScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="LowonganBerhasil"
+          component={LowonganBerhasilDitambahkanScreen}
+          options={{headerShown: false}}
+        />
+
         {/* =========================
             KLIEN
         ========================= */}
@@ -172,11 +192,7 @@ export default function App() {
           options={{headerShown: false}}
         />
 
-        <Stack.Screen
-          name="DashboardPerusahaan"
-          component={DashboardPerusahaan}
-          options={{headerShown: false}}
-        />
+
 
       </Stack.Navigator>
     </NavigationContainer>

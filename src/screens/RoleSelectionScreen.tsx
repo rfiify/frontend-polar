@@ -8,6 +8,8 @@ import {
   StatusBar,
   ScrollView,
   Platform,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 
 const COLORS = {
@@ -24,10 +26,26 @@ const COLORS = {
   stepBadgeText: '#286184',
 };
 
+
+// =====================================================
+// IMPORT GAMBAR DARI ASSETS
+// =====================================================
+
+const logoPolar = require('../assets/logoPolar.png');
+
+const iconMahasiswa = require('../assets/role/iconMahasiswa.png');
+const iconClient = require('../assets/role/iconClient.png');
+const iconPerusahaan = require('../assets/role/iconPerusahaan.png');
+
+
+// =====================================================
+// ROLE CARD
+// =====================================================
+
 type RoleCardProps = {
   title: string;
   description: string;
-  icon: string;
+  icon: ImageSourcePropType;
   iconBackground: string;
   onPress: () => void;
 };
@@ -53,89 +71,133 @@ const RoleCard = ({
             backgroundColor: iconBackground,
           },
         ]}>
-        <Text style={styles.roleIconText}>{icon}</Text>
+
+        <Image
+          source={icon}
+          style={styles.roleIconImage}
+          resizeMode="contain"
+        />
+
       </View>
+
 
       {/* CONTENT */}
       <View style={styles.roleContent}>
-        <Text style={styles.roleName}>{title}</Text>
 
-        <Text style={styles.roleDescription} numberOfLines={2}>
+        <Text style={styles.roleName}>
+          {title}
+        </Text>
+
+        <Text
+          style={styles.roleDescription}
+          numberOfLines={2}>
           {description}
         </Text>
+
       </View>
+
 
       {/* ARROW */}
       <View style={styles.arrowCircle}>
+
         <View style={styles.arrowIcon}>
           <View style={styles.arrowLine1} />
           <View style={styles.arrowLine2} />
         </View>
+
       </View>
+
     </TouchableOpacity>
   );
 };
+
+
+// =====================================================
+// SCREEN
+// =====================================================
 
 export default function RoleSelectionScreen({navigation}: any) {
 
   // =========================
   // MAHASISWA
   // =========================
+
   const handleMahasiswa = () => {
     navigation.navigate('LoginMahasiswa');
   };
 
+
   // =========================
   // CLIENT
   // =========================
+
   const handleClient = () => {
     navigation.navigate('LoginKlien');
   };
 
+
   // =========================
   // PERUSAHAAN
   // =========================
+
   const handlePerusahaan = () => {
     navigation.navigate('LoginPerusahaan');
   };
 
+
   return (
     <SafeAreaView style={styles.safeArea}>
+
       <StatusBar
         barStyle="dark-content"
         backgroundColor={COLORS.white}
       />
 
+
       {/* ================= HEADER ================= */}
+
       <View style={styles.header}>
 
-        {/* LOGO */}
+        {/* LOGO + TEXT POLAR */}
         <View style={styles.logoContainer}>
-          <View style={styles.logoBox}>
-            <Text style={styles.logoP}>P</Text>
-          </View>
+          <Image
+            source={logoPolar}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
 
-          <Text style={styles.logoText}>POLAR</Text>
+          <Text style={styles.logoText}>
+            POLAR
+          </Text>
         </View>
+
 
         {/* PORTAL */}
         <View style={styles.portalContainer}>
+
           <View style={styles.portalDot} />
 
           <Text style={styles.portalText}>
             PORTAL
           </Text>
+
         </View>
+
       </View>
 
+
       {/* ================= CONTENT ================= */}
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled">
 
+
         {/* ================= WELCOME ================= */}
+
         <View style={styles.welcomeCard}>
+
           <Text style={styles.welcomeTitle}>
             Selamat Datang di POLAR
           </Text>
@@ -144,59 +206,78 @@ export default function RoleSelectionScreen({navigation}: any) {
             Platform freelance dan peluang kerja untuk menghubungkan
             mahasiswa bertalenta dengan ekosistem profesional masa depan.
           </Text>
+
         </View>
 
+
         {/* ================= ROLE HEADER ================= */}
+
         <View style={styles.roleHeader}>
+
           <Text style={styles.roleTitle}>
             Masuk Sebagai
           </Text>
 
           <View style={styles.stepBadge}>
+
             <Text style={styles.stepText}>
               Langkah 1/2
             </Text>
+
           </View>
+
         </View>
+
 
         <Text style={styles.roleSubtitle}>
           Pilih jenis akun yang ingin kamu gunakan untuk melanjutkan sesi.
         </Text>
 
+
         {/* ================= ROLE LIST ================= */}
+
         <View style={styles.roleList}>
 
-          {/* MAHASISWA */}
+
+          {/* ================= MAHASISWA ================= */}
+
           <RoleCard
             title="Mahasiswa"
             description="Temukan peluang kerja proyek, bangun portofolio, dan tawarkan keahlian."
-            icon="🎓"
+            icon={iconMahasiswa}
             iconBackground="#EBF4FA"
             onPress={handleMahasiswa}
           />
 
-          {/* CLIENT */}
+
+          {/* ================= CLIENT ================= */}
+
           <RoleCard
             title="Client"
             description="Temukan mahasiswa dengan keahlian yang terkurasi untuk proyek."
-            icon="👤"
+            icon={iconClient}
             iconBackground="#E6F7F7"
             onPress={handleClient}
           />
 
-          {/* PERUSAHAAN */}
+
+          {/* ================= PERUSAHAAN ================= */}
+
           <RoleCard
             title="Perusahaan"
             description="Akses talenta vokasi siap industri untuk kebutuhan magang dan rekrutmen."
-            icon="🏢"
+            icon={iconPerusahaan}
             iconBackground="#EBF4FA"
             onPress={handlePerusahaan}
           />
 
         </View>
 
+
         {/* ================= FOOTER ================= */}
+
         <View style={styles.helpContainer}>
+
           <Text style={styles.helpText}>
             Butuh bantuan memilih peran? Pelajari panduan akun
           </Text>
@@ -210,14 +291,22 @@ export default function RoleSelectionScreen({navigation}: any) {
             </Text>
 
           </TouchableOpacity>
+
         </View>
 
       </ScrollView>
+
     </SafeAreaView>
   );
 }
 
+
+// =====================================================
+// STYLES
+// =====================================================
+
 const styles = StyleSheet.create({
+
   // =====================================================
   // MAIN
   // =====================================================
@@ -233,25 +322,31 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 
+
   // =====================================================
   // HEADER
   // =====================================================
 
+  // DITURUNKAN SEDIKIT AGAR TIDAK NABRAK STATUS BAR / JAM
   header: {
     height:
       Platform.OS === 'android'
-        ? 64 + (StatusBar.currentHeight || 0)
-        : 100,
+        ? 94 + (StatusBar.currentHeight || 0)
+        : 120,
 
     paddingHorizontal: 20,
 
     paddingTop:
       Platform.OS === 'android'
-        ? StatusBar.currentHeight || 0
-        : 40,
+        ? (StatusBar.currentHeight || 0) + 20
+        : 45,
+
+    paddingBottom: 14,
 
     flexDirection: 'row',
-    alignItems: 'center',
+
+    alignItems: 'flex-end',
+
     justifyContent: 'space-between',
 
     backgroundColor: COLORS.white,
@@ -260,37 +355,34 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
   },
 
+
+  // =====================================================
+  // LOGO
+  // =====================================================
+
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 10,
   },
 
-  logoBox: {
-    width: 34,
-    height: 34,
-
-    borderRadius: 8,
-
-    backgroundColor: COLORS.navy,
-
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    marginRight: 10,
-  },
-
-  logoP: {
-    color: COLORS.white,
-    fontSize: 20,
-    fontWeight: 'bold',
+  logoImage: {
+    width: 36,
+    height: 36,
+    marginRight: 8,
   },
 
   logoText: {
     color: COLORS.navy,
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 1,
+    letterSpacing: 0.2,
   },
+
+
+  // =====================================================
+  // PORTAL
+  // =====================================================
 
   portalContainer: {
     flexDirection: 'row',
@@ -315,6 +407,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
+
   // =====================================================
   // WELCOME
   // =====================================================
@@ -332,11 +425,14 @@ const styles = StyleSheet.create({
     borderColor: '#EBF2F7',
 
     shadowColor: '#000',
+
     shadowOffset: {
       width: 0,
       height: 2,
     },
+
     shadowOpacity: 0.05,
+
     shadowRadius: 10,
 
     elevation: 2,
@@ -344,7 +440,9 @@ const styles = StyleSheet.create({
 
   welcomeTitle: {
     color: COLORS.navy,
+
     fontSize: 28,
+
     fontWeight: 'bold',
 
     marginBottom: 10,
@@ -352,9 +450,12 @@ const styles = StyleSheet.create({
 
   welcomeDescription: {
     color: COLORS.textSecondary,
+
     fontSize: 14,
+
     lineHeight: 22,
   },
+
 
   // =====================================================
   // ROLE HEADER
@@ -362,7 +463,9 @@ const styles = StyleSheet.create({
 
   roleHeader: {
     flexDirection: 'row',
+
     alignItems: 'center',
+
     justifyContent: 'space-between',
 
     paddingHorizontal: 20,
@@ -372,7 +475,9 @@ const styles = StyleSheet.create({
 
   roleTitle: {
     color: COLORS.navy,
+
     fontSize: 20,
+
     fontWeight: 'bold',
   },
 
@@ -382,12 +487,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
 
     paddingHorizontal: 12,
+
     paddingVertical: 6,
   },
 
   stepText: {
     color: COLORS.stepBadgeText,
+
     fontSize: 11,
+
     fontWeight: 'bold',
   },
 
@@ -399,8 +507,10 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
 
     fontSize: 13,
+
     lineHeight: 20,
   },
+
 
   // =====================================================
   // ROLE LIST
@@ -412,6 +522,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+
+  // =====================================================
+  // ROLE CARD
+  // =====================================================
+
   roleCard: {
     height: 100,
 
@@ -422,23 +537,33 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
 
     flexDirection: 'row',
+
     alignItems: 'center',
 
     marginBottom: 12,
 
     borderWidth: 1,
+
     borderColor: COLORS.border,
 
     shadowColor: '#000',
+
     shadowOffset: {
       width: 0,
       height: 2,
     },
+
     shadowOpacity: 0.03,
+
     shadowRadius: 8,
 
     elevation: 1,
   },
+
+
+  // =====================================================
+  // ROLE ICON
+  // =====================================================
 
   roleIconContainer: {
     width: 56,
@@ -452,9 +577,15 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
 
-  roleIconText: {
-    fontSize: 26,
+  roleIconImage: {
+    width: 32,
+    height: 32,
   },
+
+
+  // =====================================================
+  // ROLE CONTENT
+  // =====================================================
 
   roleContent: {
     flex: 1,
@@ -464,6 +595,7 @@ const styles = StyleSheet.create({
     color: COLORS.navy,
 
     fontSize: 18,
+
     fontWeight: 'bold',
 
     marginBottom: 4,
@@ -473,8 +605,10 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
 
     fontSize: 12,
+
     lineHeight: 18,
   },
+
 
   // =====================================================
   // ARROW
@@ -542,6 +676,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
 
+
   // =====================================================
   // FOOTER
   // =====================================================
@@ -581,4 +716,5 @@ const styles = StyleSheet.create({
 
     textDecorationLine: 'underline',
   },
+
 });

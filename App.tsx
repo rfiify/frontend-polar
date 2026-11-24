@@ -30,7 +30,13 @@ import LengkapiProfilPerusahaan from './src/perusahaan/LengkapiProfilPerusahaan'
 import DashboardPerusahaan from './src/perusahaan/DashboardPerusahaan';
 import TambahLowonganScreen from './src/perusahaan/TambahLowonganScreen';
 import LowonganBerhasilDitambahkanScreen from './src/perusahaan/LowonganBerhasilDitambahkanScreen';
-
+import LowonganPerusahaanScreen from './src/perusahaan/LowonganPerusahaanScreen';
+import DetailLowonganScreen from './src/perusahaan/DetailLowonganScreen';
+import ReviewPelamarScreen from './src/perusahaan/ReviewPelamarScreen';
+import VerifikasiPelamarScreen from './src/perusahaan/VerifikasiPelamarScreen';
+import VerifikasiAkademikScreen from './src/perusahaan/VerifikasiAkademikScreen';
+import KelolaLowonganScreen from './src/perusahaan/KelolaLowonganScreen';
+import ChatScreen from './src/perusahaan/ChatScreen';
 
 // ===============================
 // KLIEN
@@ -151,6 +157,42 @@ export default function App() {
         <Stack.Screen
           name="LowonganBerhasil"
           component={LowonganBerhasilDitambahkanScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="LowonganPerusahaan"
+          component={LowonganPerusahaanScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="DetailLowongan"
+          component={DetailLowonganScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="ReviewPelamar"
+          component={ReviewPelamarScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="VerifikasiPelamar"
+          component={VerifikasiPelamarScreen}
+        />
+
+        <Stack.Screen
+          name="VerifikasiAkademik"
+          component={VerifikasiAkademikScreen}
+        />
+
+        <Stack.Screen
+          name="Chat"
+          component={ChatScreen}
           options={{headerShown: false}}
         />
 

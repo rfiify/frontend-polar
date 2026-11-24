@@ -10,16 +10,7 @@ import {
   Image,
 } from 'react-native';
 
-/*
-|--------------------------------------------------------------------------
-| ASSETS
-|--------------------------------------------------------------------------
-| Semua file PNG diletakkan di:
-| src/assets/
-|
-| Kalau nama file PNG lu berbeda, tinggal ubah nama file di sini.
-|--------------------------------------------------------------------------
-*/
+import PerusahaanNavbar from './PerusahaanNavbar';
 
 const logoPolar = require('../assets/logoPolar.png');
 
@@ -578,94 +569,10 @@ const DashboardPerusahaan = ({navigation}: any) => {
           BOTTOM NAVIGATION
       ========================================================= */}
 
-      <View style={styles.bottomNavigation}>
-
-        {/* BERANDA */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.bottomItem}>
-
-          <Image
-            source={navHome}
-            style={styles.bottomImageActive}
-            resizeMode="contain"
-          />
-
-          <Text style={styles.bottomActiveText}>
-            Beranda
-          </Text>
-
-        </TouchableOpacity>
-
-        {/* LOWONGAN */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.bottomItem}>
-
-          <Image
-            source={navJobs}
-            style={styles.bottomImage}
-            resizeMode="contain"
-          />
-
-          <Text style={styles.bottomText}>
-            Lowongan
-          </Text>
-
-        </TouchableOpacity>
-
-        {/* TALENTA */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.bottomItem}>
-
-          <Image
-            source={navTalenta}
-            style={styles.bottomImage}
-            resizeMode="contain"
-          />
-
-          <Text style={styles.bottomText}>
-            Talenta
-          </Text>
-
-        </TouchableOpacity>
-
-        {/* CHAT */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.bottomItem}>
-
-          <Image
-            source={navChat}
-            style={styles.bottomImage}
-            resizeMode="contain"
-          />
-
-          <Text style={styles.bottomText}>
-            Chat
-          </Text>
-
-        </TouchableOpacity>
-
-        {/* PROFIL */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.bottomItem}>
-
-          <Image
-            source={navProfile}
-            style={styles.bottomImage}
-            resizeMode="contain"
-          />
-
-          <Text style={styles.bottomText}>
-            Profil
-          </Text>
-
-        </TouchableOpacity>
-
-      </View>
+      <PerusahaanNavbar
+        navigation={navigation}
+        activeScreen="DashboardPerusahaan"
+      />
 
     </SafeAreaView>
   );
@@ -675,34 +582,26 @@ export default DashboardPerusahaan;
 
 const styles = StyleSheet.create({
 
-  // =================================================
-  // SAFE AREA
-  // =================================================
-
   safeArea: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
 
-  // =================================================
-  // HEADER
-  // =================================================
+  header: {
+    height: 108,
+    backgroundColor: '#F8FAFD',
 
-header: {
-  height: 108,
-  backgroundColor: '#F8FAFD',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
 
-  flexDirection: 'row',
-  alignItems: 'flex-end',
-  justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingTop: 28,
+    paddingBottom: 14,
 
-  paddingHorizontal: 20,
-  paddingTop: 28,
-  paddingBottom: 14,
-
-  borderBottomWidth: 1,
-  borderBottomColor: '#EEF2F6',
-},
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEF2F6',
+  },
 
   headerLeft: {
     flexDirection: 'row',
@@ -804,19 +703,11 @@ header: {
     height: 24,
   },
 
-  // =================================================
-  // CONTENT
-  // =================================================
-
   scrollContent: {
     paddingHorizontal: 18,
     paddingTop: 19,
     paddingBottom: 18,
   },
-
-  // =================================================
-  // WELCOME
-  // =================================================
 
   welcomeCard: {
     minHeight: 112,
@@ -913,10 +804,6 @@ header: {
     marginLeft: 5,
   },
 
-  // =================================================
-  // RINGKASAN
-  // =================================================
-
   sectionHeader: {
     marginTop: 27,
     marginBottom: 12,
@@ -965,10 +852,6 @@ header: {
     fontSize: 10,
     fontWeight: '600',
   },
-
-  // =================================================
-  // STATISTICS
-  // =================================================
 
   statsRow: {
     flexDirection: 'row',
@@ -1061,10 +944,6 @@ header: {
 
     marginTop: 4,
   },
-
-  // =================================================
-  // VERIFICATION
-  // =================================================
 
   verificationCard: {
     minHeight: 123,
@@ -1170,10 +1049,6 @@ header: {
     fontSize: 27,
     fontWeight: '300',
   },
-
-  // =================================================
-  // MANAJEMEN
-  // =================================================
 
   managementHeader: {
     flexDirection: 'row',
@@ -1293,10 +1168,6 @@ header: {
 
     marginLeft: 7,
   },
-
-  // =================================================
-  // NOTIFIKASI
-  // =================================================
 
   notificationHeader: {
     flexDirection: 'row',
@@ -1421,62 +1292,6 @@ header: {
 
   bottomSpacer: {
     height: 20,
-  },
-
-  // =================================================
-  // BOTTOM NAVIGATION
-  // =================================================
-
-  bottomNavigation: {
-    height: 67,
-
-    backgroundColor: '#FFFFFF',
-
-    borderTopWidth: 1,
-    borderTopColor: '#EEF1F4',
-
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-
-    paddingHorizontal: 4,
-  },
-
-  bottomItem: {
-    flex: 1,
-
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    height: 63,
-  },
-
-  bottomImage: {
-    width: 23,
-    height: 23,
-  },
-
-  bottomImageActive: {
-    width: 24,
-    height: 24,
-  },
-
-  bottomText: {
-    color: '#858C91',
-
-    fontSize: 9,
-
-    marginTop: 3,
-  },
-
-  bottomActiveText: {
-    color: '#082F47',
-
-    fontSize: 9,
-
-    fontWeight: '700',
-
-    marginTop: 3,
   },
 
 });

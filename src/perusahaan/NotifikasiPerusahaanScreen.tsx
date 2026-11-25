@@ -34,11 +34,9 @@ const iconStatusLowongan = require('../assets/perusahaan/iconStatusLowongan.png'
 // Icon titik tiga
 const iconMore = require('../assets/perusahaan/iconMore.png');
 
-
 const NotifikasiPerusahaanScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.safeArea}>
-
       <StatusBar
         barStyle="dark-content"
         backgroundColor="#F7F9FC"
@@ -55,8 +53,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
+            onPress={() => navigation.goBack()}>
             <Text style={styles.backArrow}>
               ‹
             </Text>
@@ -84,8 +81,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
-        >
+          contentContainerStyle={styles.scrollContent}>
 
           {/* ==================================================
               UNREAD + TANDAI SEMUA
@@ -106,8 +102,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
 
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.markAllButton}
-            >
+              style={styles.markAllButton}>
 
               <Image
                 source={iconTandaiSemua}
@@ -132,15 +127,13 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             style={styles.filterScroll}
-            contentContainerStyle={styles.filterContainer}
-          >
+            contentContainerStyle={styles.filterContainer}>
 
             {/* SEMUA */}
 
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.filterActive}
-            >
+              style={styles.filterActive}>
 
               <Text style={styles.filterActiveText}>
                 Semua
@@ -161,8 +154,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
 
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.filterItem}
-            >
+              style={styles.filterItem}>
 
               <Text style={styles.filterText}>
                 Pelamar Masuk
@@ -183,8 +175,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
 
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.filterItem}
-            >
+              style={styles.filterItem}>
 
               <Text style={styles.filterText}>
                 MBKM & DPL
@@ -234,7 +225,10 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
               NOTIFIKASI BAGUS
               ================================================== */}
 
-          <View style={styles.notificationCard}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.notificationCard}
+            onPress={() => navigation.navigate('DetailPelamar')}>
 
             <View style={styles.avatarContainer}>
 
@@ -270,29 +264,23 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
 
 
               <Text style={styles.notificationTitle}>
-                Bagus Pratama melamar posisi{' '}
-                {'\n'}
+                Bagus Pratama melamar posisi{'\n'}
                 Frontend Web Developer
               </Text>
 
 
               <Text style={styles.description}>
-                IPK 3.82 • Portofolio Terverifikasi{' '}
-                {'\n'}
-                Kemitraan Polinela. Berkas lamaran dan{' '}
-                {'\n'}
-                portofolio proyek siap ditinjau oleh tim{' '}
-                {'\n'}
+                IPK 3.82 • Portofolio Terverifikasi{'\n'}
+                Kemitraan Polinela. Berkas lamaran dan{'\n'}
+                portofolio proyek siap ditinjau oleh tim{'\n'}
                 HRD.
               </Text>
 
             </View>
 
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.moreButton}
-            >
+            {/* Titik tiga */}
+            <View style={styles.moreButton}>
 
               <Image
                 source={iconMore}
@@ -300,9 +288,9 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
                 resizeMode="contain"
               />
 
-            </TouchableOpacity>
+            </View>
 
-          </View>
+          </TouchableOpacity>
 
 
           {/* ==================================================
@@ -345,29 +333,22 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
 
 
               <Text style={styles.notificationTitle}>
-                Dosen Pembimbing (DPL)
-                {'\n'}
+                Dosen Pembimbing (DPL){'\n'}
                 menyetujui konversi 20 SKS
               </Text>
 
 
               <Text style={styles.description}>
-                Dr. Hendra, S.Kom., M.T. telah{' '}
-                {'\n'}
-                memvalidasi silabus magang mahasiswa{' '}
-                {'\n'}
-                untuk posisi Frontend Dev angkatan{' '}
-                {'\n'}
+                Dr. Hendra, S.Kom., M.T. telah{'\n'}
+                memvalidasi silabus magang mahasiswa{'\n'}
+                untuk posisi Frontend Dev angkatan{'\n'}
                 genap.
               </Text>
 
             </View>
 
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.moreButton}
-            >
+            <View style={styles.moreButton}>
 
               <Image
                 source={iconMore}
@@ -375,7 +356,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
                 resizeMode="contain"
               />
 
-            </TouchableOpacity>
+            </View>
 
           </View>
 
@@ -438,34 +419,28 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
 
 
               <Text style={styles.timeText}>
-                Kemarin, 14:30
-                {'\n'}
+                Kemarin, 14:30{'\n'}
                 WIB
               </Text>
 
 
               <Text style={styles.notificationTitle}>
-                Lowongan 'Frontend Web
-                {'\n'}
-                Developer' telah ditutup di portal
-                {'\n'}
+                Lowongan 'Frontend Web{'\n'}
+                Developer' telah ditutup di portal{'\n'}
                 mahasiswa
               </Text>
 
 
               <Text style={styles.description}>
-                14 mahasiswa vokasi telah melihat rincian
-                {'\n'}
-                lowongan kerja Anda dalam 24 jam
-                {'\n'}
+                14 mahasiswa vokasi telah melihat rincian{'\n'}
+                lowongan kerja Anda dalam 24 jam{'\n'}
                 pertama.
               </Text>
 
 
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.statisticButton}
-              >
+                style={styles.statisticButton}>
 
                 <Text style={styles.statisticText}>
                   Lihat Statistik Lowongan →
@@ -476,10 +451,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
             </View>
 
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.moreButton}
-            >
+            <View style={styles.moreButton}>
 
               <Image
                 source={iconMore}
@@ -487,7 +459,7 @@ const NotifikasiPerusahaanScreen = ({navigation}: any) => {
                 resizeMode="contain"
               />
 
-            </TouchableOpacity>
+            </View>
 
           </View>
 
@@ -543,19 +515,15 @@ const styles = StyleSheet.create({
   backButton: {
     width: 30,
     height: 46,
-
     justifyContent: 'center',
     alignItems: 'flex-start',
-
     marginRight: 5,
   },
 
   backArrow: {
     color: '#183B4F',
-
     fontSize: 38,
     fontWeight: '300',
-
     lineHeight: 42,
   },
 
@@ -565,19 +533,15 @@ const styles = StyleSheet.create({
 
   headerTitle: {
     color: '#142F42',
-
     fontSize: 18,
     fontWeight: '800',
-
     lineHeight: 22,
   },
 
   headerSubtitle: {
     color: '#31769A',
-
     fontSize: 9,
     fontWeight: '600',
-
     marginTop: 2,
   },
 
@@ -611,18 +575,14 @@ const styles = StyleSheet.create({
   unreadContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-
     flex: 1,
   },
 
   unreadBlueDot: {
     width: 9,
     height: 9,
-
     borderRadius: 5,
-
     backgroundColor: '#8DD5F2',
-
     marginRight: 6,
   },
 
@@ -661,13 +621,11 @@ const styles = StyleSheet.create({
 
   filterScroll: {
     marginHorizontal: -21,
-
     marginBottom: 11,
   },
 
   filterContainer: {
     paddingHorizontal: 21,
-
     gap: 8,
   },
 
@@ -690,33 +648,24 @@ const styles = StyleSheet.create({
   activeBadge: {
     width: 21,
     height: 21,
-
     borderRadius: 11,
-
     backgroundColor: '#9EDCF6',
-
     alignItems: 'center',
     justifyContent: 'center',
-
     marginLeft: 6,
   },
 
   activeBadgeText: {
     color: '#174A66',
-
     fontSize: 10,
     fontWeight: '800',
   },
 
   filterItem: {
     height: 40,
-
     paddingHorizontal: 12,
-
     borderRadius: 21,
-
     backgroundColor: '#E4F1FC',
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -724,7 +673,6 @@ const styles = StyleSheet.create({
 
   filterText: {
     color: '#25455A',
-
     fontSize: 10,
     fontWeight: '600',
   },
@@ -732,22 +680,16 @@ const styles = StyleSheet.create({
   filterBadge: {
     width: 20,
     height: 20,
-
     borderRadius: 10,
-
     backgroundColor: '#D1E7F7',
-
     alignItems: 'center',
     justifyContent: 'center',
-
     marginLeft: 6,
   },
 
   filterBadgeText: {
     color: '#32627A',
-
     fontSize: 9.5,
-
     fontWeight: '800',
   },
 
@@ -758,7 +700,6 @@ const styles = StyleSheet.create({
 
   sectionHeader: {
     height: 32,
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -766,9 +707,7 @@ const styles = StyleSheet.create({
 
   sectionHeaderYesterday: {
     height: 40,
-
     marginTop: 2,
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -782,39 +721,30 @@ const styles = StyleSheet.create({
   calendarIcon: {
     width: 16,
     height: 16,
-
     marginRight: 6,
   },
 
   historyIcon: {
     color: '#50595F',
-
     fontSize: 16,
-
     marginRight: 6,
   },
 
   sectionTitle: {
     color: '#244D66',
-
     fontSize: 12,
-
     fontWeight: '800',
   },
 
   sectionTitleYesterday: {
     color: '#4C555B',
-
     fontSize: 12,
-
     fontWeight: '800',
   },
 
   sectionCount: {
     color: '#5B6368',
-
     fontSize: 9.5,
-
     fontWeight: '500',
   },
 
@@ -825,45 +755,31 @@ const styles = StyleSheet.create({
 
   notificationCard: {
     minHeight: 190,
-
     backgroundColor: '#FFFFFF',
-
     borderRadius: 13,
-
     borderWidth: 1,
     borderColor: '#E9EDF0',
-
     marginBottom: 10,
-
     paddingTop: 14,
     paddingBottom: 14,
     paddingLeft: 12,
     paddingRight: 9,
-
     flexDirection: 'row',
-
     position: 'relative',
   },
 
   notificationCardLast: {
     minHeight: 225,
-
     backgroundColor: '#FFFFFF',
-
     borderRadius: 13,
-
     borderWidth: 1,
     borderColor: '#E9EDF0',
-
     marginBottom: 8,
-
     paddingTop: 14,
     paddingBottom: 14,
     paddingLeft: 12,
     paddingRight: 9,
-
     flexDirection: 'row',
-
     position: 'relative',
   },
 
@@ -874,16 +790,13 @@ const styles = StyleSheet.create({
 
   avatarContainer: {
     width: 42,
-
     alignItems: 'center',
   },
 
   avatar: {
     width: 38,
     height: 38,
-
     borderRadius: 19,
-
     backgroundColor: '#DCE7EC',
   },
 
@@ -894,7 +807,6 @@ const styles = StyleSheet.create({
 
   iconContainer: {
     width: 42,
-
     alignItems: 'center',
   },
 
@@ -910,83 +822,59 @@ const styles = StyleSheet.create({
 
   notificationBody: {
     flex: 1,
-
     minWidth: 0,
-
     marginLeft: 9,
-
     paddingRight: 17,
   },
 
   tagRow: {
     flexDirection: 'row',
-
     alignItems: 'center',
-
     minHeight: 20,
   },
 
   tag: {
     alignSelf: 'flex-start',
-
     backgroundColor: '#E7F1FA',
-
     borderRadius: 8,
-
     paddingHorizontal: 9,
     paddingVertical: 4,
   },
 
   tagText: {
     color: '#255876',
-
     fontSize: 8.5,
-
     fontWeight: '700',
   },
 
   unreadSmallDot: {
     width: 7,
     height: 7,
-
     borderRadius: 4,
-
     backgroundColor: '#123F5B',
-
     marginLeft: 6,
   },
 
   timeText: {
     color: '#687278',
-
     fontSize: 9.5,
-
     lineHeight: 13,
-
     marginTop: 3,
   },
 
   notificationTitle: {
     color: '#183247',
-
     fontSize: 16,
-
     fontWeight: '800',
-
     lineHeight: 20,
-
     marginTop: 7,
   },
 
   description: {
     color: '#5C656B',
-
     fontSize: 12,
-
     fontWeight: '400',
-
     lineHeight: 17,
-
     marginTop: 5,
   },
 
@@ -997,13 +885,10 @@ const styles = StyleSheet.create({
 
   moreButton: {
     position: 'absolute',
-
     right: 6,
     top: 10,
-
     width: 24,
     height: 27,
-
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1020,15 +905,12 @@ const styles = StyleSheet.create({
 
   statisticButton: {
     alignSelf: 'flex-start',
-
     marginTop: 9,
   },
 
   statisticText: {
     color: '#26739A',
-
     fontSize: 10.5,
-
     fontWeight: '600',
   },
 

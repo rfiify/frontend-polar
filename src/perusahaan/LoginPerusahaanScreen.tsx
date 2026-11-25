@@ -26,10 +26,10 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
   const [loading, setLoading] = useState(false);
 
   // ============================================================
-  // DUMMY LOGIN
+  // LOGIN BACKEND
   // ============================================================
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email.trim()) {
       Alert.alert(
         'Email Kosong',
@@ -48,13 +48,52 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
     setLoading(true);
 
-    // Dummy login.
-    // Belum menggunakan backend/API.
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const response = await fetch(
+        'http://10.0.2.2:5000/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            password: password,
+          }),
+        },
+      );
 
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        Alert.alert(
+          'Login Gagal',
+          result.message || 'Email atau password salah.',
+        );
+        return;
+      }
+
+      // Pastikan akun yang login adalah akun perusahaan
+      if (result.data?.user?.role !== 'company') {
+        Alert.alert(
+          'Akses Ditolak',
+          'Akun ini bukan akun perusahaan.',
+        );
+        return;
+      }
+
+      // Login berhasil
       navigation.navigate('DashboardPerusahaan');
-    }, 300);
+    } catch (error) {
+      console.log('LOGIN ERROR:', error);
+
+      Alert.alert(
+        'Koneksi Gagal',
+        'Tidak dapat terhubung ke server POLAR. Pastikan backend sedang berjalan.',
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ============================================================
@@ -75,7 +114,6 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-
       <StatusBar
         barStyle="dark-content"
         backgroundColor="#FFFFFF"
@@ -88,14 +126,11 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
           Platform.OS === 'ios'
             ? 'padding'
             : undefined
-        }
-      >
-
+        }>
         <ScrollView
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={styles.container}
-        >
+          contentContainerStyle={styles.container}>
 
           {/* ==================================================
               HEADER
@@ -108,8 +143,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={styles.backButton}
-              activeOpacity={0.7}
-            >
+              activeOpacity={0.7}>
               <Text style={styles.backText}>
                 ‹
               </Text>
@@ -139,8 +173,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
               <TouchableOpacity
                 style={styles.helpCircle}
-                activeOpacity={0.7}
-              >
+                activeOpacity={0.7}>
                 <Text style={styles.helpText}>
                   ?
                 </Text>
@@ -148,8 +181,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
               <TouchableOpacity
                 style={styles.profileCircle}
-                activeOpacity={0.7}
-              >
+                activeOpacity={0.7}>
                 <View style={styles.profileHead} />
 
                 <View style={styles.profileBody} />
@@ -254,8 +286,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
                   {
                     marginTop: 12,
                   },
-                ]}
-              >
+                ]}>
                 Kata Sandi
               </Text>
 
@@ -289,8 +320,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
                   onPress={() =>
                     setShowPassword(!showPassword)
                   }
-                  activeOpacity={0.7}
-                >
+                  activeOpacity={0.7}>
 
                   <View style={styles.eye}>
 
@@ -324,16 +354,14 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
                   onPress={() =>
                     setRememberMe(!rememberMe)
                   }
-                  activeOpacity={0.7}
-                >
+                  activeOpacity={0.7}>
 
                   <View
                     style={[
                       styles.checkbox,
                       rememberMe &&
                         styles.checkboxChecked,
-                    ]}
-                  >
+                    ]}>
 
                     {rememberMe && (
                       <Text style={styles.checkMark}>
@@ -354,8 +382,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
                 <TouchableOpacity
                   onPress={handleForgotPassword}
-                  activeOpacity={0.7}
-                >
+                  activeOpacity={0.7}>
 
                   <Text style={styles.forgotText}>
                     Lupa kata sandi?
@@ -378,8 +405,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
                 ]}
                 onPress={handleLogin}
                 disabled={loading}
-                activeOpacity={0.8}
-              >
+                activeOpacity={0.8}>
 
                 <Text style={styles.loginButtonText}>
                   {loading
@@ -410,8 +436,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
               <TouchableOpacity
                 onPress={handleRegister}
-                activeOpacity={0.7}
-              >
+                activeOpacity={0.7}>
 
                 <Text style={styles.registerLink}>
                   Daftar sekarang
@@ -465,7 +490,7 @@ const LoginPerusahaanScreen = ({navigation}: Props) => {
 
 
 /* ================================================================
-   STYLES
+  STYLES
 ================================================================ */
 
 const styles = StyleSheet.create({

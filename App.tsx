@@ -39,6 +39,10 @@ import KelolaLowonganScreen from './src/perusahaan/KelolaLowonganScreen';
 import ChatScreen from './src/perusahaan/ChatScreen';
 import NotifikasiPerusahaanScreen from './src/perusahaan/NotifikasiPerusahaanScreen';
 import ProfilPerusahaan from './src/perusahaan/ProfilePerusahaan';
+import ChatDetailScreen from './src/perusahaan/ChatDetailScreen';
+import DetailPelamarScreen from './src/perusahaan/DetailPelamarScreen';
+import DetailPelamarDiterimaScreen from './src/perusahaan/DetailPelamarDiterimaScreen';
+import Talenta from './src/perusahaan/Talenta';
 
 // ===============================
 // KLIEN
@@ -209,6 +213,30 @@ export default function App() {
         <Stack.Screen
           name="ProfilPerusahaan"
           component={ProfilPerusahaan}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ChatDetail"
+          component={ChatDetailScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="DetailPelamar"
+          component={DetailPelamarScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="DetailPelamarDiterima"
+          component={DetailPelamarDiterimaScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="Talenta"
+          component={Talenta}
           options={{headerShown: false}}
         />
 

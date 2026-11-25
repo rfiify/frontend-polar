@@ -309,6 +309,19 @@ const ChatScreen = ({navigation}: any) => {
                 key={index}
                 activeOpacity={0.8}
                 style={styles.conversationCard}
+
+                /*
+                 * HANYA TAMBAHAN INI:
+                 * kalau yang diklik Bagus Pratama,
+                 * masuk ke halaman ChatDetail.
+                 *
+                 * Chat lain tetap tidak berubah.
+                 */
+                onPress={() => {
+                  if (item.name === 'Bagus Pratama') {
+                    navigation.navigate('ChatDetail');
+                  }
+                }}
               >
 
                 {/* AVATAR */}

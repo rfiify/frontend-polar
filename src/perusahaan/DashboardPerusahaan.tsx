@@ -85,9 +85,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
         {/* HEADER KANAN */}
         <View style={styles.headerRight}>
 
+          {/* NOTIFIKASI */}
           <TouchableOpacity
             activeOpacity={0.8}
-            style={styles.notificationButton}>
+            style={styles.notificationButton}
+            onPress={() =>
+              navigation.navigate('NotifikasiPerusahaan')
+            }>
 
             <Image
               source={iconBell}
@@ -99,9 +103,13 @@ const DashboardPerusahaan = ({navigation}: any) => {
 
           </TouchableOpacity>
 
+          {/* PROFILE */}
           <TouchableOpacity
             activeOpacity={0.8}
-            style={styles.profileButton}>
+            style={styles.profileButton}
+            onPress={() =>
+              navigation.navigate('ProfilPerusahaan')
+            }>
 
             <Image
               source={iconProfile}
@@ -359,7 +367,9 @@ const DashboardPerusahaan = ({navigation}: any) => {
         <TouchableOpacity
           activeOpacity={0.85}
           style={styles.addJobButton}
-          onPress={() => navigation.navigate('TambahLowongan')}>
+          onPress={() =>
+            navigation.navigate('TambahLowongan')
+          }>
 
           <Text style={styles.addJobIcon}>
             ⊕

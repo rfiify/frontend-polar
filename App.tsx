@@ -37,6 +37,8 @@ import VerifikasiPelamarScreen from './src/perusahaan/VerifikasiPelamarScreen';
 import VerifikasiAkademikScreen from './src/perusahaan/VerifikasiAkademikScreen';
 import KelolaLowonganScreen from './src/perusahaan/KelolaLowonganScreen';
 import ChatScreen from './src/perusahaan/ChatScreen';
+import NotifikasiPerusahaanScreen from './src/perusahaan/NotifikasiPerusahaanScreen';
+import ProfilPerusahaan from './src/perusahaan/ProfilePerusahaan';
 
 // ===============================
 // KLIEN
@@ -143,10 +145,10 @@ export default function App() {
         />
 
         <Stack.Screen
-         name="DashboardPerusahaan"
+          name="DashboardPerusahaan"
           component={DashboardPerusahaan}
           options={{headerShown: false}}
-         />
+        />
 
         <Stack.Screen
           name="TambahLowongan"
@@ -196,6 +198,20 @@ export default function App() {
           options={{headerShown: false}}
         />
 
+        {/* NOTIFIKASI PERUSAHAAN */}
+        <Stack.Screen
+          name="NotifikasiPerusahaan"
+          component={NotifikasiPerusahaanScreen}
+          options={{headerShown: false}}
+        />
+
+        {/* PROFIL PERUSAHAAN */}
+        <Stack.Screen
+          name="ProfilPerusahaan"
+          component={ProfilPerusahaan}
+          options={{headerShown: false}}
+        />
+
         {/* =========================
             KLIEN
         ========================= */}
@@ -233,8 +249,6 @@ export default function App() {
           component={VerifikasiOTPRegistrasiKlien}
           options={{headerShown: false}}
         />
-
-
 
       </Stack.Navigator>
     </NavigationContainer>

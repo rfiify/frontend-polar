@@ -148,9 +148,13 @@ const ChatScreen = ({navigation}: any) => {
 
           <View style={styles.headerRight}>
 
+            {/* NOTIFIKASI */}
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.notificationButton}
+              onPress={() =>
+                navigation.navigate('NotifikasiPerusahaan')
+              }
             >
               <Image
                 source={iconNotification}
@@ -162,9 +166,13 @@ const ChatScreen = ({navigation}: any) => {
             </TouchableOpacity>
 
 
+            {/* PROFILE */}
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.profileButton}
+              onPress={() =>
+                navigation.navigate('ProfilPerusahaan')
+              }
             >
               <Image
                 source={iconProfile}

@@ -16,6 +16,7 @@ import LupaPasswordMahasiswa from './src/mahasiswa/LupaPasswordMahasiswa';
 import VerifikasiOTPMahasiswa from './src/mahasiswa/VerifikasiOTPMahasiswa';
 import VerifikasiOTPLupaPasswordMahasiswa from './src/mahasiswa/VerifikasiOTPLupaPasswordMahasiswa';
 import ResetPasswordMahasiswa from './src/mahasiswa/ResetPasswordMahasiswa';
+import BerandaMahasiswaScreen from './src/mahasiswa/BerandaMahasiswaScreen';
 
 // ===============================
 // PERUSAHAAN
@@ -87,6 +88,12 @@ export default function App() {
         <Stack.Screen
           name="VerifikasiOTPLupaPasswordMahasiswa"
           component={VerifikasiOTPLupaPasswordMahasiswa}
+        />
+
+        <Stack.Screen
+          name="BerandaMahasiswa"
+          component={BerandaMahasiswaScreen}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen

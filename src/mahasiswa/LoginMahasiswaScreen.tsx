@@ -49,7 +49,7 @@ export default function LoginMahasiswaScreen({navigation}: Props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email.trim() + '@polinela.ac.id',
+          email: email.trim(),
           password: password,
         }),
       });
@@ -61,6 +61,7 @@ export default function LoginMahasiswaScreen({navigation}: Props) {
       }
 
       Alert.alert('Login Berhasil', 'Selamat datang kembali di POLAR!');
+      navigation.replace('BerandaMahasiswa');
     } catch (error) {
       Alert.alert('Koneksi Gagal', 'Tidak dapat terhubung ke server.');
     } finally {
@@ -204,6 +205,7 @@ export default function LoginMahasiswaScreen({navigation}: Props) {
                 <Text style={styles.loginButtonText}>
                   {loading ? 'Memproses...' : 'Masuk'}
                 </Text>
+
                 {!loading && <Text style={styles.loginArrow}>→</Text>}
               </View>
             </TouchableOpacity>

@@ -116,7 +116,9 @@ export default function BerandaMahasiswaScreen({ navigation }: Props) {
 
           <View style={styles.cardFooter}>
             <Text style={styles.postedText}>Dibuka 2 Hari Lalu • 16 pelamar</Text>
-            <TouchableOpacity style={styles.detailBtn}>
+            <TouchableOpacity
+              style={styles.detailBtn}
+              onPress={() => navigation?.navigate('DetailLowonganMahasiswa')}>
               <Text style={styles.detailBtnText}>Lihat Detail →</Text>
             </TouchableOpacity>
           </View>
@@ -126,7 +128,14 @@ export default function BerandaMahasiswaScreen({ navigation }: Props) {
       {/* Navbar Bawah */}
       <NavbarMahasiswa
         activeTab={activeTab}
-        onSelectTab={(tab) => setActiveTab(tab)}
+        onSelectTab={(tab) => {
+          setActiveTab(tab);
+          if (tab === 'Lowongan') navigation?.navigate('LowonganMahasiswa');
+           if (tab === 'Proyek') navigation?.navigate('ProyekMahasiswa');
+           if (tab === 'Pesan') navigation?.navigate('PesanMahasiswa');
+           if (tab === 'Menu/akun') navigation?.navigate('MenuAkunMahasiswa');
+
+        }}
       />
     </View>
   );

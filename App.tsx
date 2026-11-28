@@ -31,7 +31,22 @@ import LengkapiProfilPerusahaan from './src/perusahaan/LengkapiProfilPerusahaan'
 import DashboardPerusahaan from './src/perusahaan/DashboardPerusahaan';
 import TambahLowonganScreen from './src/perusahaan/TambahLowonganScreen';
 import LowonganBerhasilDitambahkanScreen from './src/perusahaan/LowonganBerhasilDitambahkanScreen';
+import LowonganMahasiswaScreen from './src/mahasiswa/LowonganMahasiswaScreen';
+import ProyekMahasiswaScreen from './src/mahasiswa/ProyekMahasiswaScreen';
+import PesanMahasiswaScreen from './src/mahasiswa/PesanMahasiswaScreen';
+import MenuAkunMahasiswaScreen from './src/mahasiswa/MenuAkunMahasiswaScreen';
+import DetailLowonganMahasiswaScreen from './src/mahasiswa/DetailLowonganMahasiswaScreen';
+import LamarLowonganMahasiswaScreen from './src/mahasiswa/LamarLowonganMahasiswaScreen';
+import DetailProyekMahasiswaScreen from './src/mahasiswa/DetailProyekMahasiswaScreen';
+import ChatProyekMahasiswaScreen from './src/mahasiswa/ChatProyekMahasiswaScreen';
+import KirimHasilKerjaMahasiswaScreen from './src/mahasiswa/KirimHasilKerjaMahasiswaScreen';
+import DetailProyekSelesaiMahasiswaScreen from './src/mahasiswa/DetailProyekSelesaiMahasiswaScreen';
+import DetailChatMahasiswaScreen from './src/mahasiswa/DetailChatMahasiswaScreen';
+import MulaiChatMahasiswaScreen from './src/mahasiswa/MulaiChatMahasiswaScreen';
+import StatusLamaranMahasiswaScreen from './src/mahasiswa/StatusLamaranMahasiswaScreen';
+import DetailLamaranMahasiswaScreen from './src/mahasiswa/DetailLamaranMahasiswaScreen';
 
+// Di dalam <Stack.Navigator>:
 
 // ===============================
 // KLIEN
@@ -95,6 +110,96 @@ export default function App() {
           component={BerandaMahasiswaScreen}
           options={{ headerShown: false }}
         />
+
+
+
+        <Stack.Screen
+          name="LowonganMahasiswa"
+          component={LowonganMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ProyekMahasiswa"
+          component={ProyekMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="PesanMahasiswa"
+          component={PesanMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="MenuAkunMahasiswa"
+          component={MenuAkunMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="DetailLowonganMahasiswa"
+          component={DetailLowonganMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="LamarLowonganMahasiswa"
+          component={LamarLowonganMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="DetailProyekMahasiswa"
+          component={DetailProyekMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="KirimHasilKerjaMahasiswa"
+          component={KirimHasilKerjaMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+
+        <Stack.Screen
+          name="ChatProyekMahasiswa"
+          component={ChatProyekMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="DetailProyekSelesaiMahasiswa"
+          component={DetailProyekSelesaiMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="DetailChatMahasiswa"
+          component={DetailChatMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+
+        <Stack.Screen
+          name="MulaiChatMahasiswa"
+          component={MulaiChatMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="StatusLamaranMahasiswa"
+          component={StatusLamaranMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="DetailLamaranMahasiswa"
+          component={DetailLamaranMahasiswaScreen}
+          options={{ headerShown: false }}
+        />
+
+
 
         <Stack.Screen
           name="ResetPasswordMahasiswa"
